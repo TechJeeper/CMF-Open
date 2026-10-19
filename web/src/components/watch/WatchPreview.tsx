@@ -26,9 +26,17 @@ export function WatchPreview({ onPress, className }: { onPress?: (b: Button) => 
   const [surface, setSurface] = useState<Surface>('clock')
   const [shake, setShake] = useState(false)
   const lastBuzz = useRef(s.buzzes)
+  const pickedAt = useRef(0)
+  const lastAlert = useRef(s.notifications[0])
 
+  // Follow what the app draws, unless the user picked a tab recently. New alerts always
+  // come to the front, like on the real watch.
   useEffect(() => {
-    if (s.lastSurface) setSurface(s.lastSurface === 'dial' ? 'clock' : s.lastSurface)
+    const newAlert = s.notifications[0] !== lastAlert.current
+    lastAlert.current = s.notifications[0]
+    if (!s.lastSurface) return
+    if (!newAlert && Date.now() - pickedAt.current < 10_000) return
+    setSurface(newAlert ? 'notification' : s.lastSurface === 'dial' ? 'clock' : s.lastSurface)
   }, [s.lastSurface, s.music, s.notifications, s.weatherCity, s.contacts])
 
   useEffect(() => {
@@ -76,7 +84,10 @@ export function WatchPreview({ onPress, className }: { onPress?: (b: Button) => 
             key={t.id}
             role="tab"
             aria-selected={surface === t.id}
-            onClick={() => setSurface(t.id)}
+            onClick={() => {
+              pickedAt.current = Date.now()
+              setSurface(t.id)
+            }}
             className={cn(
               'rounded-full px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-muted-foreground transition hover:text-foreground',
               surface === t.id && 'bg-secondary text-foreground',
