@@ -98,9 +98,49 @@ export function ContactsSurface({ s }: { s: DisplayState }) {
   )
 }
 
-export function DialSurface({ dial }: { dial: Rgba }) {
-  const ref = useRef<HTMLCanvasElement>(null)
+export type ClockSpec = DisplayState['dialClock']
+
+/**
+ * An approximation of the watch's five built-in photo-dial clocks, positioned in 466 px
+ * screen space. Parents must set `container-type: size` so the cqw units track the dial.
+ */
+export function ClockOverlay({ clock }: { clock: ClockSpec }) {
   const now = useClock()
+  const hh = String(now.getHours()).padStart(2, '0')
+  const mm = String(now.getMinutes()).padStart(2, '0')
+  const date = now.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' }).toUpperCase()
+  const pos = { left: `${(clock.x / 466) * 100}%`, top: `${(clock.y / 466) * 100}%`, color: clock.color }
+  const shadow = '[text-shadow:0_0_1.2cqw_rgba(0,0,0,.55)]'
+  const body = [
+    <div className="flex flex-col leading-none" key={0}>
+      <span className="font-dot text-[17cqw] font-bold">{hh}:{mm}</span>
+      <span className="mt-[1cqw] font-mono text-[3.6cqw] tracking-[0.3em] opacity-80">{date}</span>
+    </div>,
+    <div className="flex flex-col font-dot text-[19cqw] leading-[0.85] font-bold" key={1}>
+      <span>{hh}</span>
+      <span>{mm}</span>
+    </div>,
+    <div className="flex flex-col leading-none" key={2}>
+      <span className="font-mono text-[4cqw] tracking-[0.35em] opacity-80">{date}</span>
+      <span className="text-[16cqw] font-extralight tracking-tight">{hh}:{mm}</span>
+    </div>,
+    <div className="flex items-end gap-[2cqw] leading-none" key={3}>
+      <span className="font-dot text-[14cqw] font-bold">{hh}:{mm}</span>
+      <span className="pb-[1.5cqw] font-mono text-[3.4cqw] tracking-widest opacity-80">{date}</span>
+    </div>,
+    <span className="font-mono text-[9cqw] font-semibold tracking-tight leading-none" key={4}>
+      {hh}:{mm}
+    </span>,
+  ][clock.style] ?? null
+  return (
+    <div className={`pointer-events-none absolute ${shadow}`} style={pos}>
+      {body}
+    </div>
+  )
+}
+
+export function DialSurface({ dial, clock }: { dial: Rgba; clock: ClockSpec }) {
+  const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
     const c = ref.current
     if (!c) return
@@ -109,9 +149,9 @@ export function DialSurface({ dial }: { dial: Rgba }) {
     c.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(dial.data), dial.width, dial.height), 0, 0)
   }, [dial])
   return (
-    <div className="relative size-full">
+    <div className="relative size-full [container-type:size]">
       <canvas ref={ref} className="size-full" />
-      <span className="absolute top-[18%] left-[14%] font-dot text-4xl font-bold text-white drop-shadow">{hhmm(now)}</span>
+      <ClockOverlay clock={clock} />
     </div>
   )
 }

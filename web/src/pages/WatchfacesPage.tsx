@@ -8,8 +8,10 @@ import { WatchPreview } from '@/components/watch/WatchPreview'
 import { build, SCREEN, THUMB, toRgb565, fromRgb565 } from '@/lib/watchface/photo'
 import { hexTo565, renderCrop, type Crop } from '@/lib/watchface/render'
 import { useWatch } from '@/state/watch-context'
+import { FaceGallery } from '@/components/faces/FaceGallery'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-export function WatchfacesPage() {
+function PhotoFace() {
   const w = useWatch()
   const [img, setImg] = useState<HTMLImageElement | null>(null)
   const [crop, setCrop] = useState<Crop>({ zoom: 1, x: 0, y: 0 })
@@ -62,13 +64,10 @@ export function WatchfacesPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Photo watchfaces</h1>
-        <p className="text-sm text-muted-foreground">
-          Any image becomes a 466 × 466 watchface. The watch draws its own clock on top. Encoding happens in your browser.
-        </p>
-      </div>
+    <div className="flex flex-col gap-4">
+      <p className="text-sm text-muted-foreground">
+        Any image becomes a 466 × 466 watchface. The watch draws its own clock on top. Encoding happens in your browser.
+      </p>
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="flex flex-col gap-4 rounded-3xl border bg-card p-5">
           {img ? (
@@ -153,6 +152,31 @@ export function WatchfacesPage() {
           {w.mode === 'sim' && <WatchPreview />}
         </div>
       </div>
+    </div>
+  )
+}
+
+export function WatchfacesPage() {
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="text-2xl font-semibold">Watchfaces</h1>
+        <p className="text-sm text-muted-foreground">
+          Generative and live faces drawn in your browser, or any photo. Customise one, then install it over Bluetooth.
+        </p>
+      </div>
+      <Tabs defaultValue="gallery">
+        <TabsList>
+          <TabsTrigger value="gallery">Gallery</TabsTrigger>
+          <TabsTrigger value="photo">From a photo</TabsTrigger>
+        </TabsList>
+        <TabsContent value="gallery" className="pt-4">
+          <FaceGallery />
+        </TabsContent>
+        <TabsContent value="photo" className="pt-4">
+          <PhotoFace />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

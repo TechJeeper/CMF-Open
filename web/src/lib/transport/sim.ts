@@ -33,6 +33,7 @@ export class SimWatch implements Transport {
   private upload: Uint8Array[] | null = null
   private uploaded = 0
   private uploadSize = 0
+  private pendingClock: { style: number; x: number; y: number; color: string } | null = null
   private replies: Promise<unknown> = Promise.resolve()
 
   setNotifyHandler(h: NotifyHandler) {
@@ -150,7 +151,16 @@ export class SimWatch implements Transport {
     } else if (is(OPS.WF_INIT1_REQUEST)) {
       this.reply(OPS.WF_INIT1_REPLY, Uint8Array.of(1))
     } else if (is(OPS.WF_INIT2_PHOTO_REQUEST)) {
-      this.uploadSize = new DataView(p.buffer, p.byteOffset).getUint32(1)
+      const v = new DataView(p.buffer, p.byteOffset, p.byteLength)
+      this.uploadSize = v.getUint32(1)
+      if (p.length >= 20) {
+        const c = v.getUint16(18)
+        const r = ((c >> 11) & 31) * 255 / 31
+        const g = ((c >> 5) & 63) * 255 / 63
+        const b = (c & 31) * 255 / 31
+        const hex = '#' + [r, g, b].map((n) => Math.round(n).toString(16).padStart(2, '0')).join('')
+        this.pendingClock = { style: v.getUint16(12), x: v.getUint16(14), y: v.getUint16(16), color: hex }
+      }
       this.upload = []
       this.uploaded = 0
       await this.reply(OPS.WF_INIT2_PHOTO_REPLY, Uint8Array.of(1))
@@ -174,7 +184,8 @@ export class SimWatch implements Transport {
     this.upload = null
     try {
       const { full } = parseDial(blob)
-      this.display.update(() => ({ dial: full, lastSurface: 'dial' }))
+      const clock = this.pendingClock
+      this.display.update((s) => ({ dial: full, dialClock: clock ?? s.dialClock, lastSurface: 'dial' }))
       this.onEvent(`watchface installed (${blob.length} bytes)`)
       this.reply(OPS.WF_FINISH_REQUEST, Uint8Array.of(1))
     } catch (e) {

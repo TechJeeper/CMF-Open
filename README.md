@@ -8,8 +8,9 @@ SDK. It also ships a toolkit for every practical way to get your own software on
    watch's music, notification, weather, and contacts screens and reacts to the
    watch's buttons. Includes a Pomodoro timer, turn-by-turn navigation, a shell-output
    ticker, a checklist, and a stopwatch.
-2. **Custom watchfaces**, working today. Turn any image into a watchface and install it
-   over Bluetooth.
+2. **Custom watchfaces**, working today. Turn any image into a watchface, or pick from a
+   gallery of generative and live faces (today's moon phase, your sun path, a year
+   spiral, synthwave, flow fields...), and install it over Bluetooth.
 3. **Custom firmware**, ready to research. Includes a Zephyr + LVGL app for the
    watch's exact SoC (Actions ATS3089C), tools that read and repack the watch's `AOTA`
    firmware container, and a capture decoder for working out the last unknown step.
@@ -18,7 +19,8 @@ The **[CMF App Store](web/)** packages options 1 and 2 as a website for GitHub P
 offers a store of apps, sideloading from a file or URL, an in-browser playground for
 writing apps, and a watchface builder. Everything runs over Web Bluetooth, with a
 simulator for browsers without it. Apps are single JavaScript files; the guide for making
-and publishing them is [docs/07-web-app-store.md](docs/07-web-app-store.md).
+and publishing them is [docs/07-web-app-store.md](docs/07-web-app-store.md). Watchfaces
+are single JavaScript files that paint a canvas; see [docs/08-watch-faces.md](docs/08-watch-faces.md).
 
 Everything talks to the watch through an independent implementation of the
 reverse-engineered BLE protocol. That includes pairing through the factory AT shell,
@@ -48,7 +50,8 @@ Details: [hardware & OS](docs/01-hardware-and-os.md) ·
 [custom firmware](docs/04-custom-firmware.md) ·
 [recon playbook](docs/05-recon-playbook.md) ·
 [writing apps](docs/06-app-development.md) ·
-[**web app store & publishing apps**](docs/07-web-app-store.md)
+[**web app store & publishing apps**](docs/07-web-app-store.md) ·
+[**making watchfaces**](docs/08-watch-faces.md)
 
 ## Web app store
 

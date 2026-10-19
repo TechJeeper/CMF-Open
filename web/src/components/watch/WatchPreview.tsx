@@ -63,7 +63,7 @@ export function WatchPreview({ onPress, className }: { onPress?: (b: Button) => 
     ) : surface === 'contacts' ? (
       <ContactsSurface s={s} />
     ) : s.dial ? (
-      <DialSurface dial={s.dial} />
+      <DialSurface dial={s.dial} clock={s.dialClock} />
     ) : (
       <ClockSurface />
     )

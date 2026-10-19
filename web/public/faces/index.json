@@ -1,0 +1,378 @@
+{
+  "name": "CMF Watchfaces",
+  "faces": [
+    {
+      "id": "daylight",
+      "name": "Daylight",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Today's real sun path where you live: sunrise, sunset and hours of daylight, worked out on your device.",
+      "tags": [
+        "live",
+        "nature"
+      ],
+      "clock": {
+        "style": 3,
+        "x": 108,
+        "y": 58,
+        "color": "#fff4e0"
+      },
+      "settings": [
+        {
+          "key": "lat",
+          "label": "Latitude",
+          "type": "number",
+          "default": 51.5,
+          "help": "Positive is north"
+        },
+        {
+          "key": "lon",
+          "label": "Longitude",
+          "type": "number",
+          "default": -0.13,
+          "help": "Positive is east"
+        },
+        {
+          "key": "h12",
+          "label": "12-hour labels",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "live": "Sunrise and sunset for the day you install it",
+      "entry": "daylight.js"
+    },
+    {
+      "id": "moon",
+      "name": "Moon Phase",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A starfield with the moon exactly as it looks tonight, plus how lit it is and when the next full moon rises.",
+      "tags": [
+        "live",
+        "nature",
+        "space"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 113,
+        "y": 52,
+        "color": "#eef1ff"
+      },
+      "settings": [
+        {
+          "key": "south",
+          "label": "Southern hemisphere view",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "tint",
+          "label": "Moon colour",
+          "type": "color",
+          "default": "#f3efe3"
+        },
+        {
+          "key": "seed",
+          "label": "Star pattern",
+          "type": "number",
+          "default": 7
+        }
+      ],
+      "live": "The moon phase on the day you install it",
+      "entry": "moon.js"
+    },
+    {
+      "id": "year-bloom",
+      "name": "Year in Bloom",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Each day of the year is a seed in a sunflower spiral. Days gone by glow, today shines, the rest are waiting.",
+      "tags": [
+        "live",
+        "generative"
+      ],
+      "clock": {
+        "style": 4,
+        "x": 170,
+        "y": 196,
+        "color": "#ffffff"
+      },
+      "settings": [
+        {
+          "key": "accent",
+          "label": "Past days",
+          "type": "color",
+          "default": "#ff7a45"
+        },
+        {
+          "key": "accent2",
+          "label": "Recent days",
+          "type": "color",
+          "default": "#ffd166"
+        }
+      ],
+      "live": "Progress through the year on the day you install it",
+      "entry": "year-bloom.js"
+    },
+    {
+      "id": "synthwave",
+      "name": "Synthwave",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A striped retro sun sinking behind neon mountains onto an endless glowing grid. Pure 1986.",
+      "tags": [
+        "retro",
+        "generative"
+      ],
+      "clock": {
+        "style": 2,
+        "x": 120,
+        "y": 52,
+        "color": "#fff0fb"
+      },
+      "settings": [
+        {
+          "key": "grid",
+          "label": "Grid colour",
+          "type": "color",
+          "default": "#ff2a6d"
+        },
+        {
+          "key": "seed",
+          "label": "Mountains",
+          "type": "number",
+          "default": 3
+        }
+      ],
+      "entry": "synthwave.js"
+    },
+    {
+      "id": "flow",
+      "name": "Flow Field",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Thousands of silky strands drifting along an invisible current. Every seed is a one-of-a-kind artwork.",
+      "tags": [
+        "generative",
+        "art"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 113,
+        "y": 92,
+        "color": "#ffffff"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Seed",
+          "type": "number",
+          "default": 42,
+          "help": "Any number gives a different piece"
+        },
+        {
+          "key": "a",
+          "label": "Colour A",
+          "type": "color",
+          "default": "#ff6b35"
+        },
+        {
+          "key": "b",
+          "label": "Colour B",
+          "type": "color",
+          "default": "#3ec1d3"
+        },
+        {
+          "key": "bg",
+          "label": "Background",
+          "type": "color",
+          "default": "#0b0b12"
+        }
+      ],
+      "entry": "flow.js"
+    },
+    {
+      "id": "terminal",
+      "name": "Terminal",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A glowing CRT shell session on your wrist. The real clock appears as the output of the date command.",
+      "tags": [
+        "retro",
+        "nerd"
+      ],
+      "clock": {
+        "style": 4,
+        "x": 74,
+        "y": 250,
+        "color": "#39ff7a"
+      },
+      "settings": [
+        {
+          "key": "user",
+          "label": "User name",
+          "type": "text",
+          "default": "you"
+        },
+        {
+          "key": "host",
+          "label": "Host name",
+          "type": "text",
+          "default": "cmf"
+        },
+        {
+          "key": "color",
+          "label": "Phosphor colour",
+          "type": "color",
+          "default": "#39ff7a",
+          "help": "Set the clock colour to match"
+        }
+      ],
+      "live": "The login date and uptime on the day you install it",
+      "entry": "terminal.js"
+    },
+    {
+      "id": "bauhaus",
+      "name": "Bauhaus",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Bold geometric tiles in red, yellow and blue, recomposed for every seed. A gallery poster for your wrist.",
+      "tags": [
+        "generative",
+        "art"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 113,
+        "y": 98,
+        "color": "#1a1a1a"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Composition",
+          "type": "number",
+          "default": 1919
+        }
+      ],
+      "entry": "bauhaus.js"
+    },
+    {
+      "id": "lava",
+      "name": "Lava Lamp",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Warm blobs of wax merging and splitting in a dark lamp. Pick your own wax and glass colours.",
+      "tags": [
+        "generative",
+        "retro"
+      ],
+      "clock": {
+        "style": 1,
+        "x": 70,
+        "y": 118,
+        "color": "#fff4e8"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Blobs",
+          "type": "number",
+          "default": 5
+        },
+        {
+          "key": "hot",
+          "label": "Wax (top)",
+          "type": "color",
+          "default": "#ffb347"
+        },
+        {
+          "key": "cold",
+          "label": "Wax (bottom)",
+          "type": "color",
+          "default": "#ff3f6c"
+        },
+        {
+          "key": "glass",
+          "label": "Glass",
+          "type": "color",
+          "default": "#2a0d3a"
+        }
+      ],
+      "entry": "lava.js"
+    },
+    {
+      "id": "month",
+      "name": "Month",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A clean calendar of the current month under the clock, with today circled. Reinstall on the 1st.",
+      "tags": [
+        "live",
+        "minimal"
+      ],
+      "clock": {
+        "style": 3,
+        "x": 104,
+        "y": 56,
+        "color": "#ffffff"
+      },
+      "settings": [
+        {
+          "key": "accent",
+          "label": "Accent",
+          "type": "color",
+          "default": "#ff4f3a"
+        },
+        {
+          "key": "mondayFirst",
+          "label": "Weeks start on Monday",
+          "type": "boolean",
+          "default": true
+        }
+      ],
+      "live": "The calendar of the month you install it in",
+      "entry": "month.js"
+    },
+    {
+      "id": "topo",
+      "name": "Topographic",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Contour lines of an imaginary landscape with a \"you are here\" pin. Forest night or paper map, your choice.",
+      "tags": [
+        "generative",
+        "nature"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 113,
+        "y": 92,
+        "color": "#eafff4"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Terrain",
+          "type": "number",
+          "default": 12
+        },
+        {
+          "key": "paper",
+          "label": "Paper map style",
+          "type": "boolean",
+          "default": false,
+          "help": "Pick a dark clock colour with this"
+        },
+        {
+          "key": "label",
+          "label": "Pin label",
+          "type": "text",
+          "default": "You are here"
+        }
+      ],
+      "entry": "topo.js"
+    }
+  ]
+}

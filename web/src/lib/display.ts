@@ -8,6 +8,8 @@ export interface DisplayState {
   weatherTemp: number
   contacts: { name: string; phone: string }[]
   dial: Rgba | null
+  /** The built-in clock the watch draws over a photo dial. */
+  dialClock: { style: number; x: number; y: number; color: string }
   buzzes: number
   lastSurface: 'music' | 'notification' | 'weather' | 'contacts' | 'dial' | null
 }
@@ -19,6 +21,7 @@ export const emptyDisplay = (): DisplayState => ({
   weatherTemp: 20,
   contacts: [],
   dial: null,
+  dialClock: { style: 0, x: 56, y: 77, color: '#ffffff' },
   buzzes: 0,
   lastSurface: null,
 })
