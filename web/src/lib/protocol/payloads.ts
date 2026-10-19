@@ -107,3 +107,60 @@ export function chunkRequest(p: Uint8Array) {
 export function buildChunkRequest(offset: number, length: number, progress = 0) {
   return concat(u32be(offset), u32be(length), Uint8Array.of(progress))
 }
+
+export function structuredDialInit(size: number, oldDialId: number): Uint8Array {
+  const out = new Uint8Array(10)
+  const v = new DataView(out.buffer)
+  out[0] = 1
+  v.setUint32(1, size, false)
+  v.setUint32(5, oldDialId, false)
+  out[9] = 1
+  return out
+}
+
+export const DIAL_CMD_LIST = 0x01
+export const DIAL_CMD_DELETE = 0x02
+export const DIAL_CMD_REORDER = 0x03
+
+export function dialList(): Uint8Array {
+  return Uint8Array.of(DIAL_CMD_LIST)
+}
+
+export function dialDelete(dialId: number): Uint8Array {
+  const out = new Uint8Array(5)
+  out[0] = DIAL_CMD_DELETE
+  new DataView(out.buffer).setUint32(1, dialId, false)
+  return out
+}
+
+export function dialReorder(dialIds: number[]): Uint8Array {
+  const out = new Uint8Array(1 + 1 + dialIds.length * 4)
+  out[0] = DIAL_CMD_REORDER
+  out[1] = dialIds.length
+  const v = new DataView(out.buffer)
+  dialIds.forEach((id, i) => v.setUint32(2 + i * 4, id, false))
+  return out
+}
+
+export interface DialInfo {
+  id: number
+  type: number
+  active: boolean
+}
+
+export function parseDialList(p: Uint8Array): DialInfo[] {
+  const dials: DialInfo[] = []
+  if (p.length < 2) return dials
+  const count = p[1]
+  let offset = 2
+  for (let i = 0; i < count && offset + 6 <= p.length; i++) {
+    const v = new DataView(p.buffer, p.byteOffset + offset)
+    dials.push({
+      id: v.getUint32(0, false),
+      type: p[offset + 4],
+      active: p[offset + 5] === 1,
+    })
+    offset += 6
+  }
+  return dials
+}

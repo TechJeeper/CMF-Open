@@ -48,10 +48,15 @@ export const OPS = {
   WF_INIT1_REPLY: op(0xffff, 0x0052),
   WF_INIT2_PHOTO_REQUEST: op(0xffff, 0x9063),
   WF_INIT2_PHOTO_REPLY: op(0xffff, 0xa063),
+  WF_INIT2_STRUCTURED_REQUEST: op(0xffff, 0x9075),
+  WF_INIT2_STRUCTURED_REPLY: op(0xffff, 0xa075),
   WF_CHUNK_REQUEST: op(0xffff, 0xa064),
   WF_CHUNK_WRITE: op(0xffff, 0x9064),
   WF_FINISH_REQUEST: op(0xffff, 0xa065),
   WF_FINISH_ACK: op(0xffff, 0x9065),
+
+  DIAL_COMMAND: op(0xffff, 0x9055),
+  DIAL_COMMAND_REPLY: op(0xffff, 0xa055),
 
   FW_CHUNK_WRITE: op(0xffff, 0x9042),
 } as const

@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ApiReference } from '@/components/apps/ApiReference'
 import { LogPanel } from '@/components/apps/LogPanel'
+import { ShellPanel } from '@/components/debug/ShellPanel'
 import { DialInspector } from '@/components/dials/DialInspector'
+import { DialManager } from '@/components/dials/DialManager'
 import { ButtonPad } from '@/components/watch/ButtonPad'
 import { WatchPreview } from '@/components/watch/WatchPreview'
 import { TEMPLATE } from '@/lib/apps/template'
@@ -68,6 +70,8 @@ export function DevelopPage() {
         <TabsList className="w-fit">
           <TabsTrigger value="apps">App Playground</TabsTrigger>
           <TabsTrigger value="dials">Dial Inspector</TabsTrigger>
+          <TabsTrigger value="manager">Dial Manager</TabsTrigger>
+          <TabsTrigger value="shell">AT Shell</TabsTrigger>
         </TabsList>
 
         <TabsContent value="apps">
@@ -149,6 +153,14 @@ export function DevelopPage() {
 
         <TabsContent value="dials">
           <DialInspector />
+        </TabsContent>
+
+        <TabsContent value="manager">
+          <DialManager />
+        </TabsContent>
+
+        <TabsContent value="shell">
+          <ShellPanel />
         </TabsContent>
       </Tabs>
     </div>

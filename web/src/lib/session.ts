@@ -4,7 +4,10 @@ import { deriveAuthkey, deriveSessionKey, sign } from './protocol/crypto'
 import { encode, FrameDecoder, FrameError, type Message } from './protocol/frame'
 import { nameOf, OPS, sameOp, type Op } from './protocol/opcodes'
 import * as pl from './protocol/payloads'
+import type { DialInfo } from './protocol/payloads'
 import type { Channel, Transport } from './transport/types'
+
+export type { DialInfo }
 
 export class AuthError extends Error {}
 
@@ -227,5 +230,100 @@ export class Session {
       await this.send(OPS.WF_CHUNK_WRITE, blob.subarray(offset, offset + length), 'data')
       opts.progress?.(Math.min(offset + length, blob.length), blob.length)
     }
+  }
+
+  /**
+   * Upload a structured dial (.bin watchface with live data bindings).
+   * Uses 9075 REPLACE mode — must specify `oldDialId` of an existing dial to replace.
+   * Get dial IDs from `listDials()` first, and delete one if needed.
+   */
+  async uploadStructuredDial(
+    blob: Uint8Array,
+    oldDialId: number,
+    opts: { progress?: (done: number, total: number) => void } = {},
+  ): Promise<boolean> {
+    const data: Channel = 'data'
+    const init1 = await this.request(OPS.WF_INIT1_REQUEST, pl.POLL, [OPS.WF_INIT1_REPLY], this.timeoutMs * 2, data)
+    if (init1.payload[0] !== 1) throw new Error('watch refused the watchface transfer')
+    const next = () => {
+      const p = this.expect([OPS.WF_CHUNK_REQUEST, OPS.WF_FINISH_REQUEST], this.timeoutMs * 4)
+      p.catch(() => {})
+      return p
+    }
+    let pending = next()
+    const init2 = await this.request(
+      OPS.WF_INIT2_STRUCTURED_REQUEST,
+      pl.structuredDialInit(blob.length, oldDialId),
+      [OPS.WF_INIT2_STRUCTURED_REPLY],
+      this.timeoutMs * 2,
+      data,
+    )
+    if (init2.payload[0] !== 1) throw new Error('watch rejected the structured dial header')
+    for (;;) {
+      const msg = await pending
+      if (sameOp(msg.op, OPS.WF_FINISH_REQUEST)) {
+        await this.send(OPS.WF_FINISH_ACK, pl.POLL, data)
+        return msg.payload[0] === 1
+      }
+      const { offset, length } = pl.chunkRequest(msg.payload)
+      pending = next()
+      await this.send(OPS.WF_CHUNK_WRITE, blob.subarray(offset, offset + length), 'data')
+      opts.progress?.(Math.min(offset + length, blob.length), blob.length)
+    }
+  }
+
+  /** List installed dials on the watch. */
+  async listDials(): Promise<DialInfo[]> {
+    const reply = await this.request(OPS.DIAL_COMMAND, pl.dialList(), [OPS.DIAL_COMMAND_REPLY])
+    return pl.parseDialList(reply.payload)
+  }
+
+  /** Delete a dial by its ID. Get IDs from listDials(). */
+  async deleteDial(dialId: number): Promise<boolean> {
+    const reply = await this.request(OPS.DIAL_COMMAND, pl.dialDelete(dialId), [OPS.DIAL_COMMAND_REPLY])
+    return reply.payload[0] === 1
+  }
+
+  /** Reorder dials. Pass array of dial IDs in desired order. */
+  async reorderDials(dialIds: number[]): Promise<boolean> {
+    const reply = await this.request(OPS.DIAL_COMMAND, pl.dialReorder(dialIds), [OPS.DIAL_COMMAND_REPLY])
+    return reply.payload[0] === 1
+  }
+
+  /** Get the watch's battery voltage in mV via AT shell (GETBATLV). */
+  async getBatteryVoltage(): Promise<number> {
+    const reply = await this.shell('AT GETBATLV')
+    const m = reply.match(/BATLV:(\d+)/)
+    if (!m) throw new Error(`unexpected GETBATLV reply: ${reply}`)
+    return parseInt(m[1], 10)
+  }
+
+  /** Get firmware version string via AT shell (GETVERSION). */
+  async getFirmwareVersionShell(): Promise<string> {
+    const reply = await this.shell('AT GETVERSION')
+    const m = reply.match(/VERSION:([^\r\n]+)/)
+    if (!m) throw new Error(`unexpected GETVERSION reply: ${reply}`)
+    return m[1].trim()
+  }
+
+  /** Get accelerometer XYZ values via AT shell (GETGSENSOR). */
+  async getAccelerometer(): Promise<{ x: number; y: number; z: number }> {
+    const reply = await this.shell('AT GETGSENSOR')
+    const m = reply.match(/GSENSOR:\s*(-?\d+)\s*,\s*(-?\d+)\s*,\s*(-?\d+)/)
+    if (!m) throw new Error(`unexpected GETGSENSOR reply: ${reply}`)
+    return { x: parseInt(m[1], 10), y: parseInt(m[2], 10), z: parseInt(m[3], 10) }
+  }
+
+  /** Get NTC thermistor temperature in 0.01°C via AT shell (GETNTCTEMP). */
+  async getNtcTemperature(): Promise<number> {
+    const reply = await this.shell('AT GETNTCTEMP')
+    const m = reply.match(/NTCTEMP:(\d+)/)
+    if (!m) throw new Error(`unexpected GETNTCTEMP reply: ${reply}`)
+    return parseInt(m[1], 10)
+  }
+
+  /** Vibrate the watch motor. Duration 0-255 (units unknown, likely ~10ms). */
+  async vibrate(duration = 50): Promise<void> {
+    await this.shell(`AT SETMOTOR${Math.min(255, Math.max(0, duration))}`)
   }
 }
