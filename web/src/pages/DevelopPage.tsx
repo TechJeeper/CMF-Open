@@ -3,8 +3,10 @@ import { BookOpen, Download, Loader2, Play, RotateCcw, TriangleAlert } from 'luc
 import { toast } from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ApiReference } from '@/components/apps/ApiReference'
 import { LogPanel } from '@/components/apps/LogPanel'
+import { DialInspector } from '@/components/dials/DialInspector'
 import { ButtonPad } from '@/components/watch/ButtonPad'
 import { WatchPreview } from '@/components/watch/WatchPreview'
 import { TEMPLATE } from '@/lib/apps/template'
@@ -58,11 +60,18 @@ export function DevelopPage() {
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold">Develop</h1>
         <p className="text-sm text-muted-foreground">
-          Write an app, run it on the simulator (or your watch, if connected), then share the file or publish it to a store.
+          Write apps, inspect structured watchfaces, and test on the simulator or your real watch.
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_minmax(0,21rem)]">
+      <Tabs defaultValue="apps" className="flex flex-col gap-4">
+        <TabsList className="w-fit">
+          <TabsTrigger value="apps">App Playground</TabsTrigger>
+          <TabsTrigger value="dials">Dial Inspector</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="apps">
+          <div className="grid gap-6 lg:grid-cols-[1fr_minmax(0,21rem)]">
         <div className="flex min-w-0 flex-col gap-3">
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => void runIt()} disabled={busy}>
@@ -136,6 +145,12 @@ export function DevelopPage() {
           </div>
         </div>
       </div>
+        </TabsContent>
+
+        <TabsContent value="dials">
+          <DialInspector />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
