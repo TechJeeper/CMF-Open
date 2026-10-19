@@ -63,7 +63,7 @@ export async function encode(
 /** Reassembles a notification byte stream into messages. Calls are serialised internally. */
 export class FrameDecoder {
   key: Uint8Array | null = null
-  private buf = new Uint8Array()
+  private buf: Uint8Array = new Uint8Array()
   private partial = new Map<string, Uint8Array[]>()
   private chain: Promise<unknown> = Promise.resolve()
   private readonly plaintextCrcOnWire: boolean
