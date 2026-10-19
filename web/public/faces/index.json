@@ -233,6 +233,44 @@
       "entry": "terminal.js"
     },
     {
+      "id": "aurora",
+      "name": "Aurora",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Northern lights over a dark horizon — flowing green and violet bands, different every seed.",
+      "tags": [
+        "generative",
+        "nature"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 113,
+        "y": 88,
+        "color": "#e8fff4"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Pattern",
+          "type": "number",
+          "default": 11
+        },
+        {
+          "key": "green",
+          "label": "Aurora green",
+          "type": "color",
+          "default": "#3dff9a"
+        },
+        {
+          "key": "violet",
+          "label": "Aurora violet",
+          "type": "color",
+          "default": "#9b5cff"
+        }
+      ],
+      "entry": "aurora.js"
+    },
+    {
       "id": "bauhaus",
       "name": "Bauhaus",
       "version": "1.0.0",
@@ -257,6 +295,82 @@
         }
       ],
       "entry": "bauhaus.js"
+    },
+    {
+      "id": "zen-enso",
+      "name": "Enso",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A hand-brushed Zen circle on warm paper. Imperfect on purpose — calm space for the clock in the middle.",
+      "tags": [
+        "minimal",
+        "art"
+      ],
+      "clock": {
+        "style": 2,
+        "x": 128,
+        "y": 108,
+        "color": "#2a2418"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Brush stroke",
+          "type": "number",
+          "default": 3
+        },
+        {
+          "key": "ink",
+          "label": "Ink",
+          "type": "color",
+          "default": "#1a1610"
+        },
+        {
+          "key": "paper",
+          "label": "Paper",
+          "type": "color",
+          "default": "#f4ead8"
+        }
+      ],
+      "entry": "zen-enso.js"
+    },
+    {
+      "id": "glitch",
+      "name": "Glitch",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "RGB-split blocks and scan lines like a misbehaving LCD. Chaotic but the clock area stays clean.",
+      "tags": [
+        "generative",
+        "retro"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 113,
+        "y": 92,
+        "color": "#ffffff"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Glitch seed",
+          "type": "number",
+          "default": 99
+        },
+        {
+          "key": "a",
+          "label": "Channel A",
+          "type": "color",
+          "default": "#ff0040"
+        },
+        {
+          "key": "b",
+          "label": "Channel B",
+          "type": "color",
+          "default": "#00e5ff"
+        }
+      ],
+      "entry": "glitch.js"
     },
     {
       "id": "lava",
@@ -303,6 +417,77 @@
       "entry": "lava.js"
     },
     {
+      "id": "marble",
+      "name": "Marble",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Swirled stone texture like Carrara marble. Every seed cuts the block differently.",
+      "tags": [
+        "generative",
+        "art"
+      ],
+      "clock": {
+        "style": 3,
+        "x": 108,
+        "y": 58,
+        "color": "#1a1a1a"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Vein pattern",
+          "type": "number",
+          "default": 19
+        },
+        {
+          "key": "light",
+          "label": "Light tone",
+          "type": "color",
+          "default": "#f5f3ef"
+        },
+        {
+          "key": "dark",
+          "label": "Vein tone",
+          "type": "color",
+          "default": "#8a8580"
+        }
+      ],
+      "entry": "marble.js"
+    },
+    {
+      "id": "matrix",
+      "name": "Matrix Rain",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Falling digital rain in classic green. Columns are seeded so your watch gets its own stream pattern.",
+      "tags": [
+        "retro",
+        "generative",
+        "nerd"
+      ],
+      "clock": {
+        "style": 4,
+        "x": 148,
+        "y": 198,
+        "color": "#6bff6b"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Seed",
+          "type": "number",
+          "default": 42
+        },
+        {
+          "key": "color",
+          "label": "Phosphor",
+          "type": "color",
+          "default": "#39ff14"
+        }
+      ],
+      "entry": "matrix.js"
+    },
+    {
       "id": "month",
       "name": "Month",
       "version": "1.0.0",
@@ -334,6 +519,90 @@
       ],
       "live": "The calendar of the month you install it in",
       "entry": "month.js"
+    },
+    {
+      "id": "prism",
+      "name": "Prism",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Rainbow light rays fan out from the upper corner through a dark room — bold and readable at a glance.",
+      "tags": [
+        "art",
+        "generative"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 113,
+        "y": 100,
+        "color": "#ffffff"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Ray spread",
+          "type": "number",
+          "default": 8
+        }
+      ],
+      "entry": "prism.js"
+    },
+    {
+      "id": "radar",
+      "name": "Radar",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Cold-war radar scope with range rings and a bright sweep. Blips are placed by your seed.",
+      "tags": [
+        "retro",
+        "generative"
+      ],
+      "clock": {
+        "style": 1,
+        "x": 188,
+        "y": 118,
+        "color": "#7dffb3"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Blip layout",
+          "type": "number",
+          "default": 7
+        }
+      ],
+      "entry": "radar.js"
+    },
+    {
+      "id": "skyline",
+      "name": "Skyline",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A layered city silhouette at dusk with window lights. The skyline profile comes from your seed.",
+      "tags": [
+        "generative",
+        "art"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 113,
+        "y": 72,
+        "color": "#ffe8c8"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "City layout",
+          "type": "number",
+          "default": 5
+        },
+        {
+          "key": "name",
+          "label": "Label under skyline",
+          "type": "text",
+          "default": "HOME"
+        }
+      ],
+      "entry": "skyline.js"
     },
     {
       "id": "topo",
@@ -373,6 +642,66 @@
         }
       ],
       "entry": "topo.js"
+    },
+    {
+      "id": "warp-stars",
+      "name": "Warp Stars",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Hyperspace streaks radiating from the centre — a sci-fi tunnel with the clock floating in front.",
+      "tags": [
+        "generative",
+        "space"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 113,
+        "y": 98,
+        "color": "#ffffff"
+      },
+      "settings": [
+        {
+          "key": "seed",
+          "label": "Star field",
+          "type": "number",
+          "default": 21
+        }
+      ],
+      "entry": "warp-stars.js"
+    },
+    {
+      "id": "week-ring",
+      "name": "Week Ring",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Seven segments for the days of this week. Past days glow, today is bright, the rest wait in the dark.",
+      "tags": [
+        "live",
+        "minimal",
+        "productivity"
+      ],
+      "clock": {
+        "style": 4,
+        "x": 198,
+        "y": 198,
+        "color": "#ffffff"
+      },
+      "settings": [
+        {
+          "key": "accent",
+          "label": "Past days",
+          "type": "color",
+          "default": "#4d96ff"
+        },
+        {
+          "key": "today",
+          "label": "Today",
+          "type": "color",
+          "default": "#ffd93d"
+        }
+      ],
+      "live": "Which day of the week it is when you install",
+      "entry": "week-ring.js"
     }
   ]
 }

@@ -115,6 +115,18 @@
       "entry": "breathe.js"
     },
     {
+      "id": "caffeine",
+      "name": "Caffeine Log",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "☕",
+      "description": "Track mg of caffeine for the day with one-tap presets. Resets at midnight; buzzes if you go over your limit.",
+      "tags": [
+        "health"
+      ],
+      "entry": "caffeine.js"
+    },
+    {
       "id": "countdown",
       "name": "Countdown",
       "version": "1.0.0",
@@ -193,6 +205,19 @@
       "entry": "interval.js"
     },
     {
+      "id": "kitchen-timer",
+      "name": "Kitchen Timers",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🍳",
+      "description": "Run several named timers together. Play starts the selected one; next/prev pick which timer you are editing.",
+      "tags": [
+        "timer",
+        "utility"
+      ],
+      "entry": "kitchen-timer.js"
+    },
+    {
       "id": "weather-live",
       "name": "Live Weather",
       "version": "1.0.0",
@@ -207,6 +232,83 @@
       "entry": "weather-live.js"
     },
     {
+      "id": "metronome",
+      "name": "Metronome",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🎵",
+      "description": "Practice tempo with a ticking beat on your wrist. Volume keys nudge BPM; play starts and stops the click.",
+      "tags": [
+        "music",
+        "timer"
+      ],
+      "entry": "metronome.js"
+    },
+    {
+      "id": "morse",
+      "name": "Morse Buzz",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "📡",
+      "description": "Convert a short phrase into morse and buzz it on your wrist. Play to send; great for silent signals.",
+      "tags": [
+        "utility",
+        "nerd"
+      ],
+      "entry": "morse.js"
+    },
+    {
+      "id": "parking",
+      "name": "Parking",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🅿️",
+      "description": "Save your spot and see how long you have been parked. Buzzes when a meter limit you set is almost up.",
+      "tags": [
+        "travel",
+        "utility"
+      ],
+      "entry": "parking.js"
+    },
+    {
+      "id": "password",
+      "name": "Password Gen",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🔐",
+      "description": "Roll a random password on your wrist. Length and symbols in settings; copy from the alert card on your phone.",
+      "tags": [
+        "utility",
+        "security"
+      ],
+      "entry": "password.js"
+    },
+    {
+      "id": "quotes",
+      "name": "Quotes",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "💬",
+      "description": "Inspiration on your wrist. Next and prev step through quotes; play sends the full line as a card.",
+      "tags": [
+        "productivity"
+      ],
+      "entry": "quotes.js"
+    },
+    {
+      "id": "random-walk",
+      "name": "Random Walk",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🚶",
+      "description": "Pick a random compass direction and walk that way for a block. Play rolls; next/prev change how many choices.",
+      "tags": [
+        "games",
+        "health"
+      ],
+      "entry": "random-walk.js"
+    },
+    {
       "id": "scoreboard",
       "name": "Scoreboard",
       "version": "1.0.0",
@@ -218,6 +320,32 @@
         "games"
       ],
       "entry": "scoreboard.js"
+    },
+    {
+      "id": "tip-split",
+      "name": "Tip & Split",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🧾",
+      "description": "Work out tip and per-person totals from the bill. Volume keys change tip %; next/prev change party size.",
+      "tags": [
+        "finance",
+        "utility"
+      ],
+      "entry": "tip-split.js"
+    },
+    {
+      "id": "converter",
+      "name": "Unit Converter",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "📐",
+      "description": "Flip through km/mi, °C/°F, kg/lb and L/gal on your wrist. Volume keys change the value; play swaps direction.",
+      "tags": [
+        "utility",
+        "travel"
+      ],
+      "entry": "converter.js"
     },
     {
       "id": "world-clock",
