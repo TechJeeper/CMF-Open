@@ -101,6 +101,136 @@
         "network"
       ],
       "entry": "crypto-ticker.js"
+    },
+    {
+      "id": "breathe",
+      "name": "Breathe",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🫁",
+      "description": "Box breathing, 4-7-8 or your own pattern. Follow the buzzes with your eyes closed.",
+      "tags": [
+        "health"
+      ],
+      "entry": "breathe.js"
+    },
+    {
+      "id": "countdown",
+      "name": "Countdown",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "⏳",
+      "description": "Days, hours and minutes until the things you are looking forward to. Buzzes when an event arrives.",
+      "tags": [
+        "utility",
+        "timer"
+      ],
+      "entry": "countdown.js"
+    },
+    {
+      "id": "decide",
+      "name": "Decision Maker",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🎱",
+      "description": "Can't choose? Ask the 8-Ball, flip a coin, or let it pick dinner from your list. Answers pop up as a card.",
+      "tags": [
+        "games",
+        "utility"
+      ],
+      "entry": "decide.js"
+    },
+    {
+      "id": "flashcards",
+      "name": "Flashcards",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🃏",
+      "description": "Study on the go. Flip a card with play, mark it known or not with the volume keys. Known cards drop out.",
+      "tags": [
+        "productivity",
+        "education"
+      ],
+      "entry": "flashcards.js"
+    },
+    {
+      "id": "habits",
+      "name": "Habit Tracker",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🌱",
+      "description": "Tick off daily habits from your wrist and keep the streaks going. Resets each day, remembers your history.",
+      "tags": [
+        "health",
+        "productivity"
+      ],
+      "entry": "habits.js"
+    },
+    {
+      "id": "hydrate",
+      "name": "Hydration",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "💧",
+      "description": "Nudges you to drink on a schedule and counts glasses towards a daily goal. Quiet hours keep nights silent.",
+      "tags": [
+        "health"
+      ],
+      "entry": "hydrate.js"
+    },
+    {
+      "id": "interval",
+      "name": "Interval Timer",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🔥",
+      "description": "Work/rest rounds for HIIT, Tabata or circuits. Your wrist buzzes at every switch so you never look at a clock.",
+      "tags": [
+        "sport",
+        "timer",
+        "health"
+      ],
+      "entry": "interval.js"
+    },
+    {
+      "id": "weather-live",
+      "name": "Live Weather",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🌤️",
+      "description": "Current conditions and an hourly forecast for any city, refreshed every 10 minutes. Needs internet.",
+      "tags": [
+        "travel",
+        "network",
+        "utility"
+      ],
+      "entry": "weather-live.js"
+    },
+    {
+      "id": "scoreboard",
+      "name": "Scoreboard",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🏆",
+      "description": "Keep score for two sides from your wrist. Volume keys for home, next/prev for away. Buzzes when someone wins.",
+      "tags": [
+        "sport",
+        "games"
+      ],
+      "entry": "scoreboard.js"
+    },
+    {
+      "id": "world-clock",
+      "name": "World Clock",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🌍",
+      "description": "Time in the cities you care about. Flick through them with next/prev; the whole list sits in contacts.",
+      "tags": [
+        "travel",
+        "utility"
+      ],
+      "entry": "world-clock.js"
     }
   ]
 }

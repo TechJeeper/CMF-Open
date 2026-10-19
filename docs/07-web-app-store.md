@@ -184,6 +184,32 @@ three ways:
 Sideload validates the manifest in a throwaway sandbox before installing. If the `id` is
 already installed, it offers to replace that app.
 
+## Sample apps to learn from
+
+Every app in `web/public/apps/` is a single readable file. Pick the closest one as a
+starting point:
+
+| App | File | Shows how to |
+| --- | --- | --- |
+| Pomodoro | `pomodoro.js` | Run a countdown on `tick` and announce phase changes with cards |
+| Interval Timer | `interval.js` | Build a step plan from settings, auto-advance, finish cleanly |
+| Breathe | `breathe.js` | Use `buzz()` as a no-look cue and parse a free-text setting |
+| Lap Stopwatch | `stopwatch.js` | Mirror state into the contacts list (`menu`) |
+| Checklist | `checklist.js` | Move a cursor through a list and persist ticks with `storage` |
+| Habit Tracker | `habits.js` | Store per-day history, compute streaks, roll over at midnight |
+| Flashcards | `flashcards.js` | Use all six buttons and reorder a deck |
+| Scoreboard | `scoreboard.js` | Map the volume keys and next/prev to two players; save a game |
+| Tally Counter | `tally.js` | Keep a single persistent number with an optional goal |
+| Hydration | `hydrate.js` | Schedule reminders with quiet hours and snooze |
+| Countdown | `countdown.js` | Parse dates from settings and fire a card when one arrives |
+| World Clock | `world-clock.js` | Format times with `Intl` and use the weather tile as a label |
+| Turn by Turn | `navigate.js` | Step through user-supplied instructions |
+| Teleprompter | `teleprompter.js` | Split long text into screen-sized pieces and auto-scroll |
+| Dice | `dice.js` | Keep a rolling history in the list |
+| Decision Maker | `decide.js` | Offer several modes behind next/prev |
+| Crypto Ticker | `crypto-ticker.js` | Fetch JSON on a slow `tick` (`permissions: ['network']`) |
+| Live Weather | `weather-live.js` | Chain two APIs, cache a lookup, and handle network errors |
+
 ## Publishing to the official store
 
 The official catalog is `web/public/apps/`. To add an app:
