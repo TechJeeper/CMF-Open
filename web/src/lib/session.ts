@@ -22,6 +22,7 @@ export class Session {
   private shellWaiter: ((s: string) => void) | null = null
   private readonly timeoutMs: number
   log: LogFn = () => {}
+  onPrompt?: () => void
 
   constructor(transport: Transport, timeoutMs = 8000) {
     this.transport = transport
@@ -141,18 +142,20 @@ export class Session {
     }
     const authkey = await deriveAuthkey(rnd1, rnd2, secret)
     onKey?.(authkey)
-    await this.login(authkey)
+    // The watch now shows a pairing prompt and only answers once the user accepts it.
+    this.onPrompt?.()
+    await this.login(authkey, undefined, 60_000)
     return authkey
   }
 
-  async login(authkey: Uint8Array, phoneName = 'CMF App Store') {
+  async login(authkey: Uint8Array, phoneName = 'CMF App Store', helloTimeoutMs = this.timeoutMs * 1.5) {
     this.authkey = authkey
     this.setKey(authkey)
     const hello = concat(pl.POLL, utf8(phoneName))
     const helloReply = [OPS.AUTH_WATCH_MAC, OPS.AUTH_FAILED]
     let mac: Message
     try {
-      mac = await this.request(OPS.AUTH_PHONE_NAME, hello, helloReply, this.timeoutMs * 1.5)
+      mac = await this.request(OPS.AUTH_PHONE_NAME, hello, helloReply, helloTimeoutMs)
     } catch {
       this.log('!!', 'no reply to AUTH_PHONE_NAME, retrying once')
       mac = await this.request(OPS.AUTH_PHONE_NAME, hello, helloReply, this.timeoutMs * 1.5)

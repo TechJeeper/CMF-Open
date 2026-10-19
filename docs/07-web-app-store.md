@@ -167,7 +167,9 @@ export default { ... }
   ```
 * **On a watch:** disconnect the Nothing X app first, then **Connect watch → CMF Watch 3
   Pro over Bluetooth**. The first connection pairs through the factory AT shell and saves
-  only the derived key in the browser.
+  only the derived key in the browser. **Accept the pairing prompt on the watch** when it
+  appears; until you do, the connection waits and eventually fails with
+  "no AUTH_WATCH_MAC/AUTH_FAILED reply".
 
 ## Sharing and sideloading
 

@@ -117,14 +117,22 @@ class Session:
         if signed2 != crypto.sign(rnd2, secret):
             raise AuthError("watch signature mismatch (wrong secret?)")
         authkey = crypto.derive_authkey(rnd1, rnd2, secret)
-        await self.login(authkey)
+        # The watch now shows a pairing prompt and only answers once the user accepts it.
+        log.warning("accept the pairing request on the watch screen")
+        await self.login(authkey, hello_timeout=60.0)
         return authkey
 
-    async def login(self, authkey: bytes) -> None:
+    async def login(self, authkey: bytes, hello_timeout: float | None = None) -> None:
         """Reconnect handshake using a previously stored auth key."""
         self.authkey = authkey
         self._set_key(authkey)
-        await self.request(ops.AUTH_PHONE_NAME, b"\xa5" + self.model.encode(), ops.AUTH_WATCH_MAC, ops.AUTH_FAILED)
+        await self.request(
+            ops.AUTH_PHONE_NAME,
+            b"\xa5" + self.model.encode(),
+            ops.AUTH_WATCH_MAC,
+            ops.AUTH_FAILED,
+            timeout=hello_timeout,
+        )
         nonce = await self.request(ops.AUTH_NONCE_REQUEST, pl.POLL, ops.AUTH_NONCE_REPLY, ops.AUTH_FAILED)
         if nonce.op == ops.AUTH_FAILED:
             raise AuthError("watch rejected auth key")

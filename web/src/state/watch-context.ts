@@ -18,6 +18,8 @@ export interface WatchContextValue {
   mode: 'sim' | 'ble' | null
   info: WatchInfo | null
   error: string | null
+  /** True while the real watch is showing its pairing prompt. */
+  awaitingWatch: boolean
   session: Session | null
   display: DisplayStore
   wire: WireLog[]

@@ -1,4 +1,4 @@
-import { Bluetooth, Copy, Cpu, Loader2, TriangleAlert } from 'lucide-react'
+import { Bluetooth, Copy, Cpu, Loader2, TriangleAlert, Watch } from 'lucide-react'
 import { toast } from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -31,7 +31,8 @@ export function ConnectDialog() {
             <span className="flex flex-col gap-1">
               <span className="font-medium">CMF Watch 3 Pro over Bluetooth</span>
               <span className="text-sm text-muted-foreground">
-                First disconnect the Nothing X app. Pairing reads the watch's factory secret, so no account is needed.
+                First disconnect the Nothing X app. Pairing reads the watch's factory secret, so no account is needed;
+                accept the prompt on the watch when it appears.
               </span>
             </span>
           </button>
@@ -80,9 +81,18 @@ export function ConnectDialog() {
               </AlertDescription>
             </Alert>
           )}
+          {busy && w.awaitingWatch && (
+            <Alert>
+              <Watch />
+              <AlertTitle>Check your watch</AlertTitle>
+              <AlertDescription>
+                Accept the pairing request on the watch screen. The app waits up to a minute.
+              </AlertDescription>
+            </Alert>
+          )}
           {busy && (
             <p className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Loader2 className="size-4 animate-spin" /> Pairing and syncing time…
+              <Loader2 className="size-4 animate-spin" /> {w.awaitingWatch ? 'Waiting for the watch…' : 'Pairing and syncing time…'}
             </p>
           )}
         </div>

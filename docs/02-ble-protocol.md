@@ -46,6 +46,11 @@ AUTH_CONFIRM_REQUEST/REPLY                                 (encrypted with sessi
 TIME                                                       (mandatory before any query)
 ```
 
+On a fresh pairing the watch shows a confirmation prompt after `AUTH_PAIR_REPLY`. It only
+answers `AUTH_PHONE_NAME` with `AUTH_WATCH_MAC` once the user accepts it on the watch. If
+nobody does, the phone sees a silent timeout, not `AUTH_FAILED`, so clients should wait
+generously (the web app waits 60 s) and tell the user to check the watch.
+
 ## Commands cmfkit uses
 
 | Feature | Opcode | Payload |

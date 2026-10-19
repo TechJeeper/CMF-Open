@@ -17,6 +17,7 @@ export function WatchProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<'sim' | 'ble' | null>(null)
   const [info, setInfo] = useState<WatchInfo | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [awaitingWatch, setAwaitingWatch] = useState(false)
   const [session, setSession] = useState<Session | null>(null)
   const [display, setDisplay] = useState(() => new DisplayStore())
   const [wire, setWire] = useState<WireLog[]>([])
@@ -42,6 +43,7 @@ export function WatchProvider({ children }: { children: ReactNode }) {
         await t.connect()
         const s = new Session(t)
         s.log = log
+        if (m === 'ble') s.onPrompt = () => setAwaitingWatch(true)
         s.onMessage((msg) => {
           let b: Button | `raw:${string}` | null = null
           if (sameOp(msg.op, OPS.MUSIC_BUTTON) && msg.payload.length) {
@@ -85,6 +87,8 @@ export function WatchProvider({ children }: { children: ReactNode }) {
         setStatus('disconnected')
         await t.disconnect().catch(() => {})
         transport.current = null
+      } finally {
+        setAwaitingWatch(false)
       }
     },
     [log],
@@ -124,6 +128,7 @@ export function WatchProvider({ children }: { children: ReactNode }) {
       mode,
       info,
       error,
+      awaitingWatch,
       session,
       display,
       wire,
@@ -142,7 +147,7 @@ export function WatchProvider({ children }: { children: ReactNode }) {
         return () => buttonListeners.current.delete(fn)
       },
     }),
-    [status, mode, info, error, session, display, wire, connectSim, connectBle, disconnect, connectOpen],
+    [status, mode, info, error, awaitingWatch, session, display, wire, connectSim, connectBle, disconnect, connectOpen],
   )
 
   return <WatchContext.Provider value={value}>{children}</WatchContext.Provider>
