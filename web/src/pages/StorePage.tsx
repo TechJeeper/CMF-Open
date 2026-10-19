@@ -10,7 +10,7 @@ import { useCatalogs, useInstalled } from '@/hooks/useStore'
 import { cn } from '@/lib/utils'
 
 const STEPS = [
-  ['Connect', 'Pair your CMF Watch 3 Pro over Web Bluetooth, or start the simulator.'],
+  ['Connect', 'Pair your CMF Watch over Web Bluetooth, or start the simulator.'],
   ['Get an app', 'Apps are small JavaScript files. They install into this browser.'],
   ['Use your wrist', 'The app draws on the music, alert, weather and list screens. You control it with the media buttons.'],
 ]
@@ -34,7 +34,7 @@ export function StorePage() {
   return (
     <div className="flex flex-col gap-10">
       <section className="dot-grid relative overflow-hidden rounded-3xl border p-6 sm:p-10">
-        <p className="font-mono text-xs uppercase tracking-[0.3em] text-brand">CMF Watch 3 Pro</p>
+        <p className="font-mono text-xs uppercase tracking-[0.3em] text-brand">CMF Watch</p>
         <h1 className="mt-3 max-w-2xl font-dot text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl">
           Apps for a watch that doesn't do apps.
         </h1>

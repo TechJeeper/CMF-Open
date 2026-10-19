@@ -1,6 +1,6 @@
 /**
  * Device identification for CMF Watch models.
- * Supports CMF Watch 3 Pro and potentially CMF Watch Pro 2.
+ * Supports CMF Watch 3 Pro and CMF Watch Pro 2.
  */
 
 export type WatchModel = 'watch3pro' | 'watchpro2' | 'unknown'

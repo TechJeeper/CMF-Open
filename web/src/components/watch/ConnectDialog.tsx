@@ -29,7 +29,7 @@ export function ConnectDialog() {
           >
             <Bluetooth className="mt-0.5 size-5 shrink-0 text-brand" />
             <span className="flex flex-col gap-1">
-              <span className="font-medium">CMF Watch 3 Pro over Bluetooth</span>
+              <span className="font-medium">CMF Watch over Bluetooth</span>
               <span className="text-sm text-muted-foreground">
                 First disconnect the Nothing X app. Pairing reads the watch's factory secret, so no account is needed;
                 accept the prompt on the watch when it appears.

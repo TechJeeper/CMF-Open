@@ -1,6 +1,6 @@
 import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/site'
 
-export const DEFAULT_TITLE = `${SITE_NAME} — apps & watchfaces for CMF Watch 3 Pro`
+export const DEFAULT_TITLE = `${SITE_NAME} — apps & watchfaces for CMF Watch`
 
 /** Hash-route paths from react-router (no leading #). */
 export const ROUTE_SEO: Record<string, { title: string; description: string }> = {
@@ -10,15 +10,15 @@ export const ROUTE_SEO: Record<string, { title: string; description: string }> =
   },
   '/library': {
     title: `My apps · ${SITE_NAME}`,
-    description: 'Apps you installed on this device for your CMF Watch 3 Pro.',
+    description: 'Apps you installed on this device for your CMF Watch.',
   },
   '/sideload': {
     title: `Sideload an app · ${SITE_NAME}`,
-    description: 'Install a custom app from a URL or paste JavaScript for your CMF Watch 3 Pro.',
+    description: 'Install a custom app from a URL or paste JavaScript for your CMF Watch.',
   },
   '/watchfaces': {
     title: `Watchfaces · ${SITE_NAME}`,
-    description: 'Generative and live watchfaces, or upload your own photo for the CMF Watch 3 Pro.',
+    description: 'Generative and live watchfaces, or upload your own photo for your CMF Watch.',
   },
   '/develop': {
     title: `Develop · ${SITE_NAME}`,
