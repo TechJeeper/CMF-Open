@@ -1,9 +1,14 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { Square } from 'lucide-react'
+import { Bug, Download, Heart, Square } from 'lucide-react'
+import { toast } from 'sonner'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { GITHUB_ISSUES, SUPPORT_URL } from '@/lib/site'
 import { ConnectDialog } from '@/components/watch/ConnectDialog'
+import { usePwaInstall } from '@/hooks/usePwaInstall'
 import { useRunner } from '@/state/runner-context'
 import { ConnectionButton } from './ConnectionButton'
+import { InstallAppButton } from './InstallAppButton'
 
 const NAV = [
   { to: '/', label: 'Store', end: true },
@@ -52,6 +57,7 @@ export function AppShell() {
           </nav>
           <div className="ml-auto flex items-center gap-2">
             <RunningPill />
+            <InstallAppButton />
             <ConnectionButton />
           </div>
         </div>
@@ -64,12 +70,50 @@ export function AppShell() {
       <main className="mx-auto max-w-6xl px-4 py-8">
         <Outlet />
       </main>
-      <footer className="mx-auto max-w-6xl px-4 pb-10 text-xs text-muted-foreground">
-        Unofficial community project, not affiliated with Nothing or CMF. Apps run in your browser and talk to the
-        watch over Bluetooth.
-      </footer>
+      <SiteFooter />
       <ConnectDialog />
     </div>
+  )
+}
+
+function SiteFooter() {
+  const { canInstall, installed, install } = usePwaInstall()
+  return (
+    <footer className="mx-auto max-w-6xl px-4 pb-10 text-xs text-muted-foreground">
+      <p>
+        Unofficial community project, not affiliated with Nothing or CMF. Apps run in your browser and talk to the
+        watch over Bluetooth.
+      </p>
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {canInstall && !installed && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="sm:hidden"
+            onClick={() =>
+              void install().then((ok) => {
+                if (ok) toast.success('App installed')
+              })
+            }
+          >
+            <Download />
+            Install app
+          </Button>
+        )}
+        <Button variant="outline" size="sm" asChild>
+          <a href={GITHUB_ISSUES} target="_blank" rel="noopener noreferrer">
+            <Bug />
+            Report issues
+          </a>
+        </Button>
+        <Button variant="ghost" size="sm" asChild>
+          <a href={SUPPORT_URL} target="_blank" rel="noopener noreferrer">
+            <Heart />
+            Support this project
+          </a>
+        </Button>
+      </div>
+    </footer>
   )
 }
 
