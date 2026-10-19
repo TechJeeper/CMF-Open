@@ -84,9 +84,9 @@ function FaceCard({ face, onOpen }: { face: FaceEntry; onOpen: () => void }) {
           <FaceView image={img} clock={clockFor(face, values)} />
         )}
       </div>
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <span className="font-medium">{face.name}</span>
+      <div className="flex flex-col gap-1.5">
+        <span className="font-medium">{face.name}</span>
+        <div className="flex flex-wrap items-center gap-1.5">
           {face.tags?.includes('animated') && (
             <Badge variant="secondary" className="gap-1 text-[10px]">
               <Play className="size-3" /> Animated
