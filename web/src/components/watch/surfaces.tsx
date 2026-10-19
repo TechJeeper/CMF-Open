@@ -128,9 +128,10 @@ export function ClockOverlay({ clock }: { clock: ClockSpec }) {
       <span className="font-dot text-[14cqw] font-bold">{hh}:{mm}</span>
       <span className="pb-[1.5cqw] font-mono text-[3.4cqw] tracking-widest opacity-80">{date}</span>
     </div>,
-    <span className="font-mono text-[9cqw] font-semibold tracking-tight leading-none" key={4}>
-      {hh}:{mm}
-    </span>,
+    <div className="flex flex-col items-center leading-none" key={4}>
+      <span className="font-mono text-[9cqw] font-semibold tracking-tight">{hh}:{mm}</span>
+      <span className="mt-[0.8cqw] font-mono text-[3cqw] tracking-widest opacity-80">{date}</span>
+    </div>,
   ][clock.style] ?? null
   return (
     <div className={`pointer-events-none absolute ${shadow}`} style={pos}>
