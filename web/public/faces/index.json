@@ -307,9 +307,15 @@
       "description": "Time displayed in binary. Each column shows hours, minutes, seconds as illuminated dots. A true nerd flex.",
       "tags": [
         "nerd",
-        "minimal"
+        "minimal",
+        "animated"
       ],
-      "clock": null,
+      "clock": {
+        "style": 0,
+        "x": 180,
+        "y": 400,
+        "color": "#00ff88"
+      },
       "settings": [
         {
           "key": "onColor",
@@ -475,14 +481,8 @@
       "settings": [
         {
           "key": "season",
-          "label": "Season",
-          "type": "select",
-          "options": [
-            "Spring",
-            "Summer",
-            "Autumn",
-            "Winter"
-          ],
+          "label": "Season (Spring/Summer/Autumn/Winter)",
+          "type": "text",
           "default": "Summer"
         }
       ],
@@ -613,19 +613,20 @@
       "description": "An elegant analog watch inspired by classic luxury timepieces. Polished metal and refined details.",
       "tags": [
         "classic",
-        "elegant"
+        "elegant",
+        "animated"
       ],
-      "clock": null,
+      "clock": {
+        "style": 0,
+        "x": 180,
+        "y": 400,
+        "color": "#d4af37"
+      },
       "settings": [
         {
           "key": "metal",
-          "label": "Metal finish",
-          "type": "select",
-          "options": [
-            "Gold",
-            "Silver",
-            "Rose Gold"
-          ],
+          "label": "Metal (Gold/Silver/Rose Gold)",
+          "type": "text",
           "default": "Gold"
         }
       ],
@@ -745,9 +746,15 @@
       "tags": [
         "retro",
         "nerd",
-        "fun"
+        "fun",
+        "animated"
       ],
-      "clock": null,
+      "clock": {
+        "style": 0,
+        "x": 180,
+        "y": 400,
+        "color": "#ff0080"
+      },
       "settings": [
         {
           "key": "color",
@@ -799,20 +806,20 @@
       "description": "A chunky 8-bit pixel art clock that takes you back to the golden age of gaming.",
       "tags": [
         "retro",
-        "fun"
+        "fun",
+        "animated"
       ],
-      "clock": null,
+      "clock": {
+        "style": 0,
+        "x": 180,
+        "y": 400,
+        "color": "#9bbc0f"
+      },
       "settings": [
         {
           "key": "palette",
-          "label": "Color palette",
-          "type": "select",
-          "options": [
-            "Gameboy",
-            "NES",
-            "CGA",
-            "Neon"
-          ],
+          "label": "Palette (Gameboy/NES/CGA/Neon)",
+          "type": "text",
           "default": "Gameboy"
         }
       ],
@@ -914,9 +921,15 @@
       "tags": [
         "space",
         "fun",
-        "live"
+        "live",
+        "animated"
       ],
-      "clock": null,
+      "clock": {
+        "style": 0,
+        "x": 180,
+        "y": 420,
+        "color": "#ffffff"
+      },
       "settings": [
         {
           "key": "showLabels",
@@ -941,9 +954,15 @@
       "description": "Three concentric arcs that fill as hours, minutes, and seconds progress. A beautiful data visualization.",
       "tags": [
         "minimal",
-        "fitness"
+        "fitness",
+        "animated"
       ],
-      "clock": null,
+      "clock": {
+        "style": 0,
+        "x": 180,
+        "y": 280,
+        "color": "#ffffff"
+      },
       "settings": [
         {
           "key": "hourColor",
