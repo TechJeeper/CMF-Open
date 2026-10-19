@@ -2,6 +2,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { AppShell } from '@/components/layout/AppShell'
+import { PageTracker } from '@/components/layout/PageTracker'
 import { AppPage } from '@/pages/AppPage'
 import { DevelopPage } from '@/pages/DevelopPage'
 import { LibraryPage } from '@/pages/LibraryPage'
@@ -20,6 +21,7 @@ export default function App() {
       <RunnerProvider>
         <TooltipProvider>
           <HashRouter>
+            <PageTracker />
             <Routes>
               <Route element={<AppShell />}>
                 <Route index element={<StorePage />} />

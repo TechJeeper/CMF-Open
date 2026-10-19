@@ -16,7 +16,10 @@ export default defineConfig({
       manifest: {
         name: 'CMF App Store',
         short_name: 'CMF Store',
-        description: 'Install and run apps on the CMF Watch 3 Pro from your browser over Web Bluetooth.',
+        description:
+          'Unofficial app store for CMF Watch 3 Pro: sideload apps, generative watchfaces, and photo dials over Web Bluetooth.',
+        categories: ['utilities', 'lifestyle'],
+        lang: 'en-GB',
         theme_color: '#0b0b0b',
         background_color: '#0b0b0b',
         display: 'standalone',

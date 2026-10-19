@@ -100,6 +100,16 @@ every time.
 | Terminal | `terminal.js` | Text layout around the clock; scanlines and vignette |
 | Bauhaus | `bauhaus.js` | Seeded tile composition with a reserved clock cell |
 | Lava Lamp | `lava.js` | Metaballs computed per pixel into `ImageData` |
+| Aurora | `aurora.js` | Layered translucent bands with `noise` |
+| Matrix Rain | `matrix.js` | Column-based text drawing |
+| Radar | `radar.js` | Arcs, gradients, and seeded blips |
+| Enso | `zen-enso.js` | Single continuous path with noise wobble |
+| Marble | `marble.js` | Full-frame `ImageData` from layered noise |
+| Skyline | `skyline.js` | Procedural silhouette and window lights |
+| Prism | `prism.js` | Fan of semi-transparent colour wedges |
+| Week Ring | `week-ring.js` | Live segment ring from `now.getDay()` |
+| Glitch | `glitch.js` | Skip a rectangle so the clock stays readable |
+| Warp Stars | `warp-stars.js` | Radial streaks and a centre vignette |
 
 ## Testing
 

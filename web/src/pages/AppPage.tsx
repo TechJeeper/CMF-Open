@@ -9,6 +9,7 @@ import { RunPanel } from '@/components/apps/RunPanel'
 import { SettingsForm } from '@/components/apps/SettingsForm'
 import { AppIcon } from '@/components/store/AppIcon'
 import { useCatalogs, useInstalled } from '@/hooks/useStore'
+import { trackEvent } from '@/lib/analytics'
 import { installFromCatalog } from '@/lib/store/actions'
 import { uninstall } from '@/lib/store/installed'
 import { useRunner } from '@/state/runner-context'
@@ -52,8 +53,10 @@ export function AppPage() {
     setBusy(true)
     try {
       await installFromCatalog(entry)
+      trackEvent(`app/install/${entry.id}`)
       toast.success(`${entry.name} installed`)
     } catch (e) {
+      trackEvent(`app/install/${entry.id}/error`)
       toast.error('Install failed', { description: (e as Error).message })
     } finally {
       setBusy(false)

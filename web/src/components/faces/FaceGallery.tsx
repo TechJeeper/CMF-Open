@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ArrowLeft, Download, Loader2, RotateCcw, Send, Sparkles, TriangleAlert } from 'lucide-react'
 import { toast } from 'sonner'
+import { trackEvent } from '@/lib/analytics'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -145,9 +146,15 @@ function FaceEditor({ face, onBack }: { face: FaceEntry; onBack: () => void }) {
         color565: hexTo565(clock.color),
         progress: (d, t) => setProgress(Math.round((d / t) * 100)),
       })
-      if (ok) toast.success(`${face.name} installed`, face.live ? { description: 'Reinstall it to refresh its live data.' } : undefined)
-      else toast.error('The watch rejected the watchface')
+      if (ok) {
+        trackEvent(`watchface/install/${face.id}`)
+        toast.success(`${face.name} installed`, face.live ? { description: 'Reinstall it to refresh its live data.' } : undefined)
+      } else {
+        trackEvent('watchface/install/rejected')
+        toast.error('The watch rejected the watchface')
+      }
     } catch (e) {
+      trackEvent('watchface/install/error')
       toast.error('Upload failed', { description: (e as Error).message })
     } finally {
       setProgress(null)

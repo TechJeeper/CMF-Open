@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { trackEvent } from '@/lib/analytics'
 import { isStandalone } from '@/lib/pwa'
 
 type PwaContextValue = {
@@ -34,6 +35,7 @@ export function PwaProvider({ children }: { children: ReactNode }) {
     if (outcome === 'accepted') {
       setPrompt(null)
       setInstalled(true)
+      trackEvent('pwa/install')
       return true
     }
     return false

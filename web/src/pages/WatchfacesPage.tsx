@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Download, ImageUp, Loader2, Send } from 'lucide-react'
 import { toast } from 'sonner'
+import { trackEvent } from '@/lib/analytics'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Progress } from '@/components/ui/progress'
@@ -54,9 +55,15 @@ function PhotoFace() {
         color565: hexTo565(color),
         progress: (d, t) => setProgress(Math.round((d / t) * 100)),
       })
-      if (ok) toast.success('Watchface installed')
-      else toast.error('The watch rejected the watchface')
+      if (ok) {
+        trackEvent('watchface/install/photo')
+        toast.success('Watchface installed')
+      } else {
+        trackEvent('watchface/install/rejected')
+        toast.error('The watch rejected the watchface')
+      }
     } catch (e) {
+      trackEvent('watchface/install/error')
       toast.error('Upload failed', { description: (e as Error).message })
     } finally {
       setProgress(null)

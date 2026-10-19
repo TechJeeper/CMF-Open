@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
 import { toast } from 'sonner'
+import { trackEvent } from '@/lib/analytics'
 import type { Button } from '@/lib/apps/manifest'
 import { DisplayStore } from '@/lib/display'
 import { OPS, sameOp } from '@/lib/protocol/opcodes'
@@ -81,8 +82,10 @@ export function WatchProvider({ children }: { children: ReactNode }) {
         setStatus('connected')
         setConnectOpen(false)
         toast.success(`Connected to ${t.name}`)
+        trackEvent(`connect/${m}`)
       } catch (e) {
         const msg = e instanceof AuthError ? `Pairing failed: ${e.message}` : (e as Error).message
+        trackEvent(`connect/${m}/fail`)
         if ((e as Error).name !== 'NotFoundError') setError(msg)
         setStatus('disconnected')
         await t.disconnect().catch(() => {})

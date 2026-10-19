@@ -209,6 +209,16 @@ starting point:
 | Decision Maker | `decide.js` | Offer several modes behind next/prev |
 | Crypto Ticker | `crypto-ticker.js` | Fetch JSON on a slow `tick` (`permissions: ['network']`) |
 | Live Weather | `weather-live.js` | Chain two APIs, cache a lookup, and handle network errors |
+| Metronome | `metronome.js` | Fast `tick` with `buzz()` on downbeats |
+| Kitchen Timers | `kitchen-timer.js` | Several parallel countdowns in one app |
+| Tip & Split | `tip-split.js` | Derive display from numeric settings without storage |
+| Unit Converter | `converter.js` | Mode carousel with `play` toggling conversion direction |
+| Parking | `parking.js` | Session storage plus timed reminders on `tick` |
+| Caffeine Log | `caffeine.js` | Daily totals that roll over at midnight |
+| Quotes | `quotes.js` | Long text on the music card and in `menu` rows |
+| Random Walk | `random-walk.js` | Minimal state and one-shot `card` feedback |
+| Password Gen | `password.js` | Generate secrets only on the card (never log them) |
+| Morse Buzz | `morse.js` | Async `buzz()` sequences with cancel via `find_phone` |
 
 ## Publishing to the official store
 

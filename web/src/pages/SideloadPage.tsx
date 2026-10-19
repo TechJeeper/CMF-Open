@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FileCode, Link2, Loader2, ShieldAlert, TriangleAlert, Upload } from 'lucide-react'
 import { toast } from 'sonner'
+import { trackEvent } from '@/lib/analytics'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -112,6 +113,7 @@ export function SideloadPage() {
           <Button
             onClick={() => {
               const app = save(found.manifest, found.source, 'sideload', found.from)
+              trackEvent(existing ? `app/sideload/replace/${app.manifest.id}` : `app/sideload/${app.manifest.id}`)
               toast.success(`${app.manifest.name} ${existing ? 'replaced' : 'installed'}`)
               nav(`/app/${app.manifest.id}`)
             }}

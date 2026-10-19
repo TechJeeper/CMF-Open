@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { toast } from 'sonner'
+import { trackEvent } from '@/lib/analytics'
 import { AppHost, type AppLog } from '@/lib/apps/host'
 import type { AppManifest, Button } from '@/lib/apps/manifest'
 import { Screen } from '@/lib/apps/screen'
@@ -47,6 +48,7 @@ export function RunnerProvider({ children }: { children: ReactNode }) {
       try {
         await h.start(app.source, loadSettings(m), loadAppData(m.id))
         setRunning(m)
+        trackEvent(`app/run/${m.id}`)
       } catch (e) {
         host.current = null
         toast.error(`${m.name} failed to start`, { description: (e as Error).message })

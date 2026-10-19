@@ -4,6 +4,7 @@ import { Check, Download, Loader2, Play, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { trackEvent } from '@/lib/analytics'
 import { installFromCatalog } from '@/lib/store/actions'
 import type { CatalogEntry } from '@/lib/store/catalog'
 import { compareVersions, type InstalledApp } from '@/lib/store/installed'
@@ -20,8 +21,10 @@ export function AppCard({ entry, installed }: { entry: CatalogEntry; installed?:
     setBusy(true)
     try {
       const app = await installFromCatalog(entry)
+      trackEvent(update ? `app/update/${entry.id}` : `app/install/${entry.id}`)
       toast.success(`${app.manifest.name} ${update ? 'updated' : 'installed'}`)
     } catch (e) {
+      trackEvent(`app/install/${entry.id}/error`)
       toast.error(`Couldn't install ${entry.name}`, { description: (e as Error).message })
     } finally {
       setBusy(false)
