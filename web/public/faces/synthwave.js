@@ -5,7 +5,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'A striped retro sun with an endless glowing grid rushing towards you. Pure 1986.',
-  tags: ['retro', 'generative', 'animated'],
+  tags: ['retro', 'generative'],
   clock: { style: 2, x: 120, y: 52, color: '#fff0fb' },
   settings: [
     { key: 'grid', label: 'Grid colour', type: 'color', default: '#ff2a6d' },

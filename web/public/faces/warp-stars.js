@@ -4,7 +4,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'Hyperspace streaks radiating from the centre — stars zoom past as you travel through space.',
-  tags: ['generative', 'space', 'animated'],
+  tags: ['generative', 'space'],
   clock: { style: 0, x: 113, y: 98, color: '#ffffff' },
   settings: [{ key: 'seed', label: 'Star field', type: 'number', default: 21 }],
 }

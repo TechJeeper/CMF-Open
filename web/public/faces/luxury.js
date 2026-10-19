@@ -5,7 +5,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'An elegant analog watch inspired by classic luxury timepieces. Polished metal and refined details.',
-  tags: ['classic', 'elegant', 'animated'],
+  tags: ['classic', 'elegant'],
   clock: { style: 0, x: 180, y: 400, color: '#d4af37' },
   settings: [
     { key: 'metal', label: 'Metal (Gold/Silver/Rose Gold)', type: 'text', default: 'Gold' },

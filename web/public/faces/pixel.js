@@ -5,7 +5,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'A chunky 8-bit pixel art clock that takes you back to the golden age of gaming.',
-  tags: ['retro', 'fun', 'animated'],
+  tags: ['retro', 'fun'],
   clock: { style: 0, x: 180, y: 400, color: '#9bbc0f' },
   settings: [
     { key: 'palette', label: 'Palette (Gameboy/NES/CGA/Neon)', type: 'text', default: 'Gameboy' },

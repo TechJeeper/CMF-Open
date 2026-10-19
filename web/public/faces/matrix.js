@@ -4,7 +4,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'Falling digital rain in classic green. Characters cascade down the screen in real-time.',
-  tags: ['retro', 'generative', 'nerd', 'animated'],
+  tags: ['retro', 'generative', 'nerd'],
   clock: { style: 4, x: 148, y: 198, color: '#6bff6b' },
   settings: [
     { key: 'seed', label: 'Seed', type: 'number', default: 42 },

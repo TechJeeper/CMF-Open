@@ -4,7 +4,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'Cold-war radar scope with a sweeping beam that rotates with the seconds. Blips fade in and out.',
-  tags: ['retro', 'generative', 'animated'],
+  tags: ['retro', 'generative'],
   clock: { style: 1, x: 188, y: 118, color: '#7dffb3' },
   settings: [{ key: 'seed', label: 'Blip layout', type: 'number', default: 7 }],
 }

@@ -63,14 +63,13 @@ function FaceCard({ face, onOpen }: { face: FaceEntry; onOpen: () => void }) {
   const [img, setImg] = useState<Rgba | null>(null)
   const [error, setError] = useState<string | null>(null)
   const values = useMemo(() => loadFaceSettings(face.id, faceDefaults(face)), [face])
+  
   useEffect(() => {
     let live = true
     renderFace(face.url, values)
       .then((r) => live && setImg(r.full))
       .catch((e: Error) => live && setError(e.message))
-    return () => {
-      live = false
-    }
+    return () => { live = false }
   }, [face, values])
   return (
     <button
@@ -227,7 +226,14 @@ function FaceEditor({ face, onBack }: { face: FaceEntry; onBack: () => void }) {
               )}
             </div>
             <p className="text-sm text-muted-foreground">{face.description}</p>
-            {isAnimated && <p className="text-xs text-muted-foreground">This watchface animates in preview. The installed version captures a single frame.</p>}
+            {isAnimated && (
+              <Alert className="bg-amber-950/30 border-amber-800/50">
+                <Play className="size-4 text-amber-500" />
+                <AlertDescription className="text-amber-200/80">
+                  <strong>Preview-only animation:</strong> The CMF Watch displays static images. When you install this face, it captures a single frame. The animation only plays here in the browser preview.
+                </AlertDescription>
+              </Alert>
+            )}
             {face.live && <p className="text-xs text-muted-foreground">Uses: {face.live}. Reinstall to refresh it.</p>}
           </div>
 

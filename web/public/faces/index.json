@@ -123,8 +123,7 @@
       "description": "A striped retro sun with an endless glowing grid rushing towards you. Pure 1986.",
       "tags": [
         "retro",
-        "generative",
-        "animated"
+        "generative"
       ],
       "clock": {
         "style": 2,
@@ -156,8 +155,7 @@
       "description": "Thousands of silky strands drifting along an evolving current. The flow shifts gently over time.",
       "tags": [
         "generative",
-        "art",
-        "animated"
+        "art"
       ],
       "clock": {
         "style": 0,
@@ -242,8 +240,7 @@
       "description": "Northern lights over a dark horizon — flowing green and violet bands that shimmer and wave.",
       "tags": [
         "generative",
-        "nature",
-        "animated"
+        "nature"
       ],
       "clock": {
         "style": 0,
@@ -307,8 +304,7 @@
       "description": "Time displayed in binary. Each column shows hours, minutes, seconds as illuminated dots. A true nerd flex.",
       "tags": [
         "nerd",
-        "minimal",
-        "animated"
+        "minimal"
       ],
       "clock": {
         "style": 0,
@@ -430,8 +426,7 @@
       "description": "A hand-brushed Zen circle that breathes gently. The ink subtly flows like a living meditation.",
       "tags": [
         "minimal",
-        "art",
-        "animated"
+        "art"
       ],
       "clock": {
         "style": 2,
@@ -496,8 +491,7 @@
       "description": "RGB-split blocks and scan lines that flicker and shift like a misbehaving display.",
       "tags": [
         "generative",
-        "retro",
-        "animated"
+        "retro"
       ],
       "clock": {
         "style": 0,
@@ -568,8 +562,7 @@
       "description": "Warm blobs of wax merging and splitting in a dark lamp. Pick your own wax and glass colours.",
       "tags": [
         "generative",
-        "retro",
-        "animated"
+        "retro"
       ],
       "clock": {
         "style": 1,
@@ -613,8 +606,7 @@
       "description": "An elegant analog watch inspired by classic luxury timepieces. Polished metal and refined details.",
       "tags": [
         "classic",
-        "elegant",
-        "animated"
+        "elegant"
       ],
       "clock": {
         "style": 0,
@@ -679,8 +671,7 @@
       "tags": [
         "retro",
         "generative",
-        "nerd",
-        "animated"
+        "nerd"
       ],
       "clock": {
         "style": 4,
@@ -746,8 +737,7 @@
       "tags": [
         "retro",
         "nerd",
-        "fun",
-        "animated"
+        "fun"
       ],
       "clock": {
         "style": 0,
@@ -806,8 +796,7 @@
       "description": "A chunky 8-bit pixel art clock that takes you back to the golden age of gaming.",
       "tags": [
         "retro",
-        "fun",
-        "animated"
+        "fun"
       ],
       "clock": {
         "style": 0,
@@ -833,8 +822,7 @@
       "description": "Rainbow light rays that slowly rotate and pulse, casting shifting colors through a dark room.",
       "tags": [
         "art",
-        "generative",
-        "animated"
+        "generative"
       ],
       "clock": {
         "style": 0,
@@ -860,8 +848,7 @@
       "description": "Cold-war radar scope with a sweeping beam that rotates with the seconds. Blips fade in and out.",
       "tags": [
         "retro",
-        "generative",
-        "animated"
+        "generative"
       ],
       "clock": {
         "style": 1,
@@ -887,8 +874,7 @@
       "description": "A city silhouette at dusk with twinkling window lights that flicker on and off.",
       "tags": [
         "generative",
-        "art",
-        "animated"
+        "art"
       ],
       "clock": {
         "style": 0,
@@ -921,8 +907,7 @@
       "tags": [
         "space",
         "fun",
-        "live",
-        "animated"
+        "live"
       ],
       "clock": {
         "style": 0,
@@ -954,8 +939,7 @@
       "description": "Three concentric arcs that fill as hours, minutes, and seconds progress. A beautiful data visualization.",
       "tags": [
         "minimal",
-        "fitness",
-        "animated"
+        "fitness"
       ],
       "clock": {
         "style": 0,
@@ -1038,8 +1022,7 @@
       "description": "Hyperspace streaks radiating from the centre — stars zoom past as you travel through space.",
       "tags": [
         "generative",
-        "space",
-        "animated"
+        "space"
       ],
       "clock": {
         "style": 0,

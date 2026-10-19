@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ApiReference } from '@/components/apps/ApiReference'
 import { LogPanel } from '@/components/apps/LogPanel'
 import { ShellPanel } from '@/components/debug/ShellPanel'
+import { DialBuilder } from '@/components/dials/DialBuilder'
 import { DialInspector } from '@/components/dials/DialInspector'
 import { DialManager } from '@/components/dials/DialManager'
 import { AutoSyncSettings } from '@/components/sync/AutoSyncSettings'
@@ -70,6 +71,7 @@ export function DevelopPage() {
       <Tabs defaultValue="apps" className="flex flex-col gap-4">
         <TabsList className="w-fit flex-wrap">
           <TabsTrigger value="apps">App Playground</TabsTrigger>
+          <TabsTrigger value="builder">Dial Builder</TabsTrigger>
           <TabsTrigger value="dials">Dial Inspector</TabsTrigger>
           <TabsTrigger value="manager">Dial Manager</TabsTrigger>
           <TabsTrigger value="sync">Auto-Sync</TabsTrigger>
@@ -151,6 +153,10 @@ export function DevelopPage() {
           </div>
         </div>
       </div>
+        </TabsContent>
+
+        <TabsContent value="builder">
+          <DialBuilder />
         </TabsContent>
 
         <TabsContent value="dials">

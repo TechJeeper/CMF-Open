@@ -5,7 +5,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'Time displayed in binary. Each column shows hours, minutes, seconds as illuminated dots. A true nerd flex.',
-  tags: ['nerd', 'minimal', 'animated'],
+  tags: ['nerd', 'minimal'],
   clock: { style: 0, x: 180, y: 400, color: '#00ff88' },
   settings: [
     { key: 'onColor', label: 'On color', type: 'color', default: '#00ff88' },

@@ -5,7 +5,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'A tiny solar system where planets represent hours and minutes. Watch time orbit around the sun.',
-  tags: ['space', 'fun', 'live', 'animated'],
+  tags: ['space', 'fun', 'live'],
   clock: { style: 0, x: 180, y: 420, color: '#ffffff' },
   settings: [
     { key: 'showLabels', label: 'Show time labels', type: 'boolean', default: true },

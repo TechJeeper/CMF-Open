@@ -5,7 +5,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'Warm blobs of wax merging and splitting in a dark lamp. Pick your own wax and glass colours.',
-  tags: ['generative', 'retro', 'animated'],
+  tags: ['generative', 'retro'],
   clock: { style: 1, x: 70, y: 118, color: '#fff4e8' },
   settings: [
     { key: 'seed', label: 'Blobs', type: 'number', default: 5 },

@@ -4,7 +4,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'Northern lights over a dark horizon — flowing green and violet bands that shimmer and wave.',
-  tags: ['generative', 'nature', 'animated'],
+  tags: ['generative', 'nature'],
   clock: { style: 0, x: 113, y: 88, color: '#e8fff4' },
   settings: [
     { key: 'seed', label: 'Pattern', type: 'number', default: 11 },

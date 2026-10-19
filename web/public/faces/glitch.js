@@ -4,7 +4,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'RGB-split blocks and scan lines that flicker and shift like a misbehaving display.',
-  tags: ['generative', 'retro', 'animated'],
+  tags: ['generative', 'retro'],
   clock: { style: 0, x: 113, y: 92, color: '#ffffff' },
   settings: [
     { key: 'seed', label: 'Glitch seed', type: 'number', default: 99 },

@@ -5,7 +5,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'Thousands of silky strands drifting along an evolving current. The flow shifts gently over time.',
-  tags: ['generative', 'art', 'animated'],
+  tags: ['generative', 'art'],
   clock: { style: 0, x: 113, y: 92, color: '#ffffff' },
   settings: [
     { key: 'seed', label: 'Seed', type: 'number', default: 42, help: 'Any number gives a different piece' },

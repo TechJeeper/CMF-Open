@@ -4,7 +4,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'A city silhouette at dusk with twinkling window lights that flicker on and off.',
-  tags: ['generative', 'art', 'animated'],
+  tags: ['generative', 'art'],
   clock: { style: 0, x: 113, y: 72, color: '#ffe8c8' },
   settings: [
     { key: 'seed', label: 'City layout', type: 'number', default: 5 },

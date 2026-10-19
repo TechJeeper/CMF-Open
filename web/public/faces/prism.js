@@ -4,7 +4,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'Rainbow light rays that slowly rotate and pulse, casting shifting colors through a dark room.',
-  tags: ['art', 'generative', 'animated'],
+  tags: ['art', 'generative'],
   clock: { style: 0, x: 113, y: 100, color: '#ffffff' },
   settings: [{ key: 'seed', label: 'Ray spread', type: 'number', default: 8 }],
 }

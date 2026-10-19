@@ -4,7 +4,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'A hand-brushed Zen circle that breathes gently. The ink subtly flows like a living meditation.',
-  tags: ['minimal', 'art', 'animated'],
+  tags: ['minimal', 'art'],
   clock: { style: 2, x: 128, y: 108, color: '#2a2418' },
   settings: [
     { key: 'seed', label: 'Brush stroke', type: 'number', default: 3 },
