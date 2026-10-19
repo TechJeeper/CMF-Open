@@ -27,17 +27,22 @@ export function WatchPreview({ onPress, className }: { onPress?: (b: Button) => 
   const [shake, setShake] = useState(false)
   const lastBuzz = useRef(s.buzzes)
   const lastAlert = useRef(s.notifications[0])
+  const alertAt = useRef(0)
 
   // Follow the app when it moves to another surface or raises an alert, like the real
-  // watch does. Redraws of the same surface (e.g. a ticking timer) leave a picked tab alone.
+  // watch does. Redraws of the same surface (e.g. a ticking timer) leave a picked tab alone,
+  // and an alert holds the screen briefly even if the app redraws right after sending it.
   useEffect(() => {
-    const newAlert = s.notifications[0] !== lastAlert.current
+    if (s.notifications[0] === lastAlert.current) return
     lastAlert.current = s.notifications[0]
-    if (newAlert) setSurface('notification')
+    alertAt.current = Date.now()
+    setSurface('notification')
   }, [s.notifications])
 
   useEffect(() => {
-    if (s.lastSurface && s.lastSurface !== 'notification') setSurface(s.lastSurface === 'dial' ? 'clock' : s.lastSurface)
+    if (!s.lastSurface || s.lastSurface === 'notification') return
+    if (Date.now() - alertAt.current < 3000) return
+    setSurface(s.lastSurface === 'dial' ? 'clock' : s.lastSurface)
   }, [s.lastSurface])
 
   useEffect(() => {
