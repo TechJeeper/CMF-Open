@@ -63,7 +63,7 @@ export default {
       lastTap = now
       if (taps.length > 8) taps.shift()
       bpm = calcBpm()
-      await watch.vibrate()
+      if (watch.vibrate) await watch.vibrate()
     } else if (button === 'next') {
       if (bpm > 0) saved.push(bpm)
       taps = []

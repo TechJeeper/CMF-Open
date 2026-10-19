@@ -5,8 +5,8 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'Three concentric arcs that fill as hours, minutes, and seconds progress. A beautiful data visualization.',
-  tags: ['minimal', 'fitness'],
-  clock: null,
+  tags: ['minimal', 'fitness', 'animated'],
+  clock: { style: 0, x: 180, y: 280, color: '#ffffff' },
   settings: [
     { key: 'hourColor', label: 'Hour ring', type: 'color', default: '#ff6b6b' },
     { key: 'minColor', label: 'Minute ring', type: 'color', default: '#4ecdc4' },

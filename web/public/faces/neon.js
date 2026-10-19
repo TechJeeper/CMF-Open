@@ -5,8 +5,8 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'A glowing neon sign that flickers occasionally. Brings the vibe of a late-night diner to your wrist.',
-  tags: ['retro', 'nerd', 'fun'],
-  clock: null,
+  tags: ['retro', 'nerd', 'fun', 'animated'],
+  clock: { style: 0, x: 180, y: 400, color: '#ff0080' },
   settings: [
     { key: 'color', label: 'Neon color', type: 'color', default: '#ff0080' },
     { key: 'flicker', label: 'Flicker effect', type: 'boolean', default: true },

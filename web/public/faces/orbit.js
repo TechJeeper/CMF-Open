@@ -5,8 +5,8 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'A tiny solar system where planets represent hours and minutes. Watch time orbit around the sun.',
-  tags: ['space', 'fun', 'live'],
-  clock: null,
+  tags: ['space', 'fun', 'live', 'animated'],
+  clock: { style: 0, x: 180, y: 420, color: '#ffffff' },
   settings: [
     { key: 'showLabels', label: 'Show time labels', type: 'boolean', default: true },
     { key: 'trailLength', label: 'Orbit trails', type: 'boolean', default: true },
@@ -67,17 +67,19 @@ export default function draw(ctx, { size, settings, now }) {
     ctx.stroke()
   })
 
-  if (settings.trailLength !== false) {
+  if (settings.trailLength !== false && ctx.createConicGradient) {
     orbits.forEach(({ r, angle, color }) => {
       const grad = ctx.createConicGradient(angle - Math.PI, cx, cy)
-      grad.addColorStop(0, 'transparent')
-      grad.addColorStop(0.15, color + '40')
-      grad.addColorStop(0.5, 'transparent')
-      ctx.strokeStyle = grad
-      ctx.lineWidth = 3
-      ctx.beginPath()
-      ctx.arc(cx, cy, r, 0, Math.PI * 2)
-      ctx.stroke()
+      if (grad && grad.addColorStop) {
+        grad.addColorStop(0, 'transparent')
+        grad.addColorStop(0.15, color + '40')
+        grad.addColorStop(0.5, 'transparent')
+        ctx.strokeStyle = grad
+        ctx.lineWidth = 3
+        ctx.beginPath()
+        ctx.arc(cx, cy, r, 0, Math.PI * 2)
+        ctx.stroke()
+      }
     })
   }
 

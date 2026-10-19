@@ -10,7 +10,7 @@ export const manifest = {
   tags: ['tools', 'outdoor'],
   buttons: { next: 'Rotate right', prev: 'Rotate left', play: 'Reset to N' },
   settings: [
-    { key: 'style', label: 'Style', type: 'select', options: ['Modern', 'Classic', 'Minimal'], default: 'Modern' },
+    { key: 'style', label: 'Style (Modern/Classic/Minimal)', type: 'text', default: 'Modern' },
   ],
 }
 

@@ -49,16 +49,16 @@ export default {
     elapsed++
     
     if (interval > 0 && elapsed % interval === 0 && elapsed < duration) {
-      await watch.notify('🔔', 'Mindfulness bell')
-      await watch.vibrate()
+      if (watch.notify) await watch.notify('🔔', 'Mindfulness bell')
+      if (watch.vibrate) await watch.vibrate()
     }
     
     if (elapsed >= duration) {
       running = false
       const bells = watch.settings.endBells || 3
-      await watch.notify('🧘', `Session complete`)
+      if (watch.notify) await watch.notify('🧘', `Session complete`)
       for (let i = 0; i < bells; i++) {
-        await watch.vibrate()
+        if (watch.vibrate) await watch.vibrate()
       }
     }
     
@@ -76,8 +76,8 @@ export default {
     } else if (button === 'prev' && running) {
       const nextBell = interval - (elapsed % interval)
       elapsed += nextBell
-      await watch.notify('🔔', 'Mindfulness bell')
-      await watch.vibrate()
+      if (watch.notify) await watch.notify('🔔', 'Mindfulness bell')
+      if (watch.vibrate) await watch.vibrate()
     }
     await render(watch)
   },

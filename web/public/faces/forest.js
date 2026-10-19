@@ -8,7 +8,7 @@ export const face = {
   tags: ['nature', 'live', 'calm'],
   clock: { style: 0, x: 160, y: 70, color: '#ffffff' },
   settings: [
-    { key: 'season', label: 'Season', type: 'select', options: ['Spring', 'Summer', 'Autumn', 'Winter'], default: 'Summer' },
+    { key: 'season', label: 'Season (Spring/Summer/Autumn/Winter)', type: 'text', default: 'Summer' },
   ],
 }
 

@@ -44,15 +44,15 @@ export default {
       reps++
       total++
       if (reps === target) {
-        await watch.vibrate()
-        await watch.notify('💪', `Set ${set} complete!`)
+        if (watch.vibrate) await watch.vibrate()
+        if (watch.notify) await watch.notify('💪', `Set ${set} complete!`)
       }
     } else if (button === 'next') {
       if (reps > 0) {
         history.push(reps)
         set++
         reps = 0
-        await watch.vibrate()
+        if (watch.vibrate) await watch.vibrate()
       }
     } else if (button === 'prev') {
       if (reps > 0) {

@@ -58,16 +58,15 @@ export default {
 
     if (elapsed - lastCheckIn >= checkInInterval && elapsed < duration) {
       lastCheckIn = elapsed
-      await watch.notify('🎯', 'Still focused?')
-      await watch.vibrate()
+      if (watch.notify) await watch.notify('🎯', 'Still focused?')
+      if (watch.vibrate) await watch.vibrate()
     }
 
     if (elapsed >= duration) {
       running = false
       sessions++
-      await watch.notify('✅', `Focus session complete!`)
-      await watch.vibrate()
-      await watch.vibrate()
+      if (watch.notify) await watch.notify('✅', `Focus session complete!`)
+      if (watch.vibrate) await watch.vibrate()
     }
 
     await render(watch)
@@ -86,8 +85,8 @@ export default {
     } else if (button === 'next') {
       duration += 900
     } else if (button === 'prev' && running) {
-      await watch.notify('🎯', 'Stay focused! You got this.')
-      await watch.vibrate()
+      if (watch.notify) await watch.notify('🎯', 'Stay focused! You got this.')
+      if (watch.vibrate) await watch.vibrate()
     }
     await render(watch)
   },

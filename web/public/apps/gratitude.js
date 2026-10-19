@@ -62,9 +62,9 @@ export default {
     } else if (button === 'play' || button === 'pause') {
       if (!completed.has(promptIdx)) {
         completed.add(promptIdx)
-        await watch.vibrate()
+        if (watch.vibrate) await watch.vibrate()
         if (completed.size === PROMPTS.length) {
-          await watch.notify('🙏', 'All gratitudes complete!')
+          if (watch.notify) await watch.notify('🙏', 'All gratitudes complete!')
           streak++
         }
       }

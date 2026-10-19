@@ -65,7 +65,7 @@ export default {
       const lapTime = current - lastLapTime
       laps.push(lapTime)
       lastLapTime = current
-      await watch.vibrate()
+      if (watch.vibrate) await watch.vibrate()
     } else if (button === 'prev') {
       running = false
       elapsed = 0
