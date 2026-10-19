@@ -9,13 +9,16 @@ an independent Python implementation of that specification.
 
 ## GATT
 
-| Channel | Write | Notify |
-|---|---|---|
-| Command (framed, encrypted) | `0000fff2-0000-1000-8000-00805f9b34fb` | `0000fff1-…` |
-| AT shell (plain text) | `77d4ff01-2fe2-2334-0d35-9ccd078f529c` | `77d4ff02-…` |
-| Bulk data (watchface/OTA/AGPS) | `02f00000-0000-0000-0000-00000000ffe1` | `…ffe2` |
+| Channel | Service | Write | Notify |
+|---|---|---|---|
+| Command (framed, encrypted) | `0000fff0-0000-1000-8000-00805f9b34fb` | `0000fff2-…` | `0000fff1-…` |
+| AT shell (plain text) | `77d4e67c-2fe2-2334-0d35-9ccd078f529c` | `77d4ff01-…` | `77d4ff02-…` |
+| Bulk data (watchface/AGPS) | `02f00000-0000-0000-0000-00000000ffe0` | `…ffe1` | `…ffe2` |
+| Firmware | `02f00000-0000-0000-0000-00000000fe00` | `…ff01` | `…ff02` |
 
-The watch advertises as `CMF Watch 3 Pro-XXXX`.
+The watch advertises as `CMF Watch 3 Pro-XXXX`. Web Bluetooth only grants access to
+services listed up front in `optionalServices`, so the web app needs these exact
+service UUIDs. They match Gadgetbridge's `CmfWatchProSupport`.
 
 ## Frames: `src/cmfkit/protocol/frame.py`
 

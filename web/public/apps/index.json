@@ -1,0 +1,106 @@
+{
+  "name": "CMF App Store",
+  "apps": [
+    {
+      "id": "pomodoro",
+      "name": "Pomodoro",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🍅",
+      "description": "Focus/break timer on the music screen. A card buzzes your wrist at every phase change.",
+      "tags": [
+        "productivity",
+        "timer"
+      ],
+      "entry": "pomodoro.js"
+    },
+    {
+      "id": "stopwatch",
+      "name": "Lap Stopwatch",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "⏱️",
+      "description": "Start, stop and record laps from your wrist. Laps appear in the contacts list.",
+      "tags": [
+        "sport",
+        "timer"
+      ],
+      "entry": "stopwatch.js"
+    },
+    {
+      "id": "checklist",
+      "name": "Checklist",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "✅",
+      "description": "Packing lists, groceries, pre-flight checks. Tick items off with the media buttons; progress is saved.",
+      "tags": [
+        "productivity"
+      ],
+      "entry": "checklist.js"
+    },
+    {
+      "id": "navigate",
+      "name": "Turn by Turn",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🧭",
+      "description": "Step through a route on your wrist. Paste directions as \"instruction | distance\" lines.",
+      "tags": [
+        "travel"
+      ],
+      "entry": "navigate.js"
+    },
+    {
+      "id": "teleprompter",
+      "name": "Teleprompter",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🎤",
+      "description": "Silent speaker notes. Next/prev move through your script; play scrolls it automatically.",
+      "tags": [
+        "productivity",
+        "presenting"
+      ],
+      "entry": "teleprompter.js"
+    },
+    {
+      "id": "tally",
+      "name": "Tally Counter",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🔢",
+      "description": "Count anything with a tap. The count survives restarts; set a goal to get a buzz when you hit it.",
+      "tags": [
+        "sport",
+        "utility"
+      ],
+      "entry": "tally.js"
+    },
+    {
+      "id": "dice",
+      "name": "Dice",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🎲",
+      "description": "Roll a d4 to d100 from your wrist. History of the last 20 rolls goes into the contacts list.",
+      "tags": [
+        "games"
+      ],
+      "entry": "dice.js"
+    },
+    {
+      "id": "crypto-ticker",
+      "name": "Crypto Ticker",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "📈",
+      "description": "Shows a coin price on the weather tile and music card, refreshed every minute. Needs internet.",
+      "tags": [
+        "finance",
+        "network"
+      ],
+      "entry": "crypto-ticker.js"
+    }
+  ]
+}
