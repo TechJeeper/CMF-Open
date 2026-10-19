@@ -5,6 +5,7 @@ import type { Button } from '@/lib/apps/manifest'
 import { DisplayStore } from '@/lib/display'
 import { OPS, sameOp } from '@/lib/protocol/opcodes'
 import { AuthError, Session } from '@/lib/session'
+import { runAutoSync, shouldSync, loadSyncConfig } from '@/lib/sync/auto-sync'
 import { BUTTON_CODES, SimWatch, type ButtonName } from '@/lib/transport/sim'
 import type { Transport } from '@/lib/transport/types'
 import { WebBleTransport } from '@/lib/transport/webble'
@@ -83,6 +84,22 @@ export function WatchProvider({ children }: { children: ReactNode }) {
         setConnectOpen(false)
         toast.success(`Connected to ${t.name}`)
         trackEvent(`connect/${m}`)
+
+        if (m === 'ble' && shouldSync()) {
+          const config = loadSyncConfig()
+          if (config.enabled) {
+            runAutoSync(s, config)
+              .then((result) => {
+                if (result.moon) {
+                  toast.message(`Synced ${result.moon.emoji} ${result.moon.name}`)
+                }
+                if (result.weather) {
+                  toast.message(`Synced weather: ${result.weather.city} ${result.weather.tempC}°C`)
+                }
+              })
+              .catch(() => {})
+          }
+        }
       } catch (e) {
         const msg = e instanceof AuthError ? `Pairing failed: ${e.message}` : (e as Error).message
         trackEvent(`connect/${m}/fail`)

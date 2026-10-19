@@ -9,6 +9,7 @@ import { LogPanel } from '@/components/apps/LogPanel'
 import { ShellPanel } from '@/components/debug/ShellPanel'
 import { DialInspector } from '@/components/dials/DialInspector'
 import { DialManager } from '@/components/dials/DialManager'
+import { AutoSyncSettings } from '@/components/sync/AutoSyncSettings'
 import { ButtonPad } from '@/components/watch/ButtonPad'
 import { WatchPreview } from '@/components/watch/WatchPreview'
 import { TEMPLATE } from '@/lib/apps/template'
@@ -67,10 +68,11 @@ export function DevelopPage() {
       </div>
 
       <Tabs defaultValue="apps" className="flex flex-col gap-4">
-        <TabsList className="w-fit">
+        <TabsList className="w-fit flex-wrap">
           <TabsTrigger value="apps">App Playground</TabsTrigger>
           <TabsTrigger value="dials">Dial Inspector</TabsTrigger>
           <TabsTrigger value="manager">Dial Manager</TabsTrigger>
+          <TabsTrigger value="sync">Auto-Sync</TabsTrigger>
           <TabsTrigger value="shell">AT Shell</TabsTrigger>
         </TabsList>
 
@@ -157,6 +159,10 @@ export function DevelopPage() {
 
         <TabsContent value="manager">
           <DialManager />
+        </TabsContent>
+
+        <TabsContent value="sync">
+          <AutoSyncSettings />
         </TabsContent>
 
         <TabsContent value="shell">
