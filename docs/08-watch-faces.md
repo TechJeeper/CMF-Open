@@ -1,9 +1,44 @@
 # Making watchfaces
 
-The CMF Watch 3 Pro accepts one kind of custom watchface: a **photo dial**. That's a
-466 × 466 background image plus a few bytes saying where the watch should draw its own
-built-in clock (one of five styles, in a colour you choose). The wire format is in
-[02-ble-protocol.md](02-ble-protocol.md) and `web/src/lib/watchface/photo.ts`.
+The CMF Watch 3 Pro supports two types of custom watchfaces:
+
+## 1. Photo Dials (what this store creates)
+
+A **photo dial** is a 466 × 466 background image plus a few bytes saying where the watch
+should draw its built-in digital clock (one of five styles, in a colour you choose).
+The wire format is in [02-ble-protocol.md](02-ble-protocol.md) and `web/src/lib/watchface/photo.ts`.
+
+**Limitation:** The background is static. The only moving element is the digital clock overlay.
+
+## 2. Structured Dials (animated, with live data)
+
+For **truly dynamic watchfaces** with rotating analog hands, progress arcs, and live
+health data, you need **structured dials** — `.bin` files with a TLV widget tree.
+
+Structured dials can have:
+- **Rotating analog hands** (hour/minute/second with smooth sweep)
+- **Live heart rate** from the PPG sensor
+- **Step counter** updating in real-time  
+- **Battery percentage**
+- **Progress rings** that fill based on goals
+
+Tools for creating structured dials:
+- **[WCMF Studio](https://lexp-hub.github.io/wcmf/)** — Full visual editor
+- **[FMC Editor](https://fmc.freethinkel.dev/)** — Browser-based with BLE flashing
+- **[fmc_go](https://github.com/freethinkel/fmc_go)** — CLI decompiler/compiler
+
+See [09-structured-dials.md](09-structured-dials.md) for the TLV format.
+
+## 3. Video Watchfaces (Watch 3 Pro only)
+
+The CMF Watch 3 Pro officially supports **video backgrounds** via the Nothing X app:
+- Upload any video clip (max 5 seconds)
+- Choose which segment to display
+- Loops continuously
+
+---
+
+# Photo Dial Format (this store)
 
 A still image sounds limiting, but the background can be *computed*. The store's
 watchfaces are small JavaScript modules that paint the background on a canvas when you

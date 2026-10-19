@@ -297,6 +297,51 @@
       "entry": "bauhaus.js"
     },
     {
+      "id": "analog-classic",
+      "name": "Classic Analog",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A timeless analog dial. Note: This is a static preview — for true animated hands, use a structured dial (.bin) with analog hand widgets.",
+      "tags": [
+        "analog",
+        "classic",
+        "minimal"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 0,
+        "y": 0,
+        "color": "#ffffff"
+      },
+      "settings": [
+        {
+          "key": "dialColor",
+          "label": "Dial colour",
+          "type": "color",
+          "default": "#1a1a1a"
+        },
+        {
+          "key": "accentColor",
+          "label": "Accent colour",
+          "type": "color",
+          "default": "#ff4f3a"
+        },
+        {
+          "key": "showIndices",
+          "label": "Hour markers",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "showNumbers",
+          "label": "Hour numbers",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "entry": "analog-classic.js"
+    },
+    {
       "id": "zen-enso",
       "name": "Enso",
       "version": "1.0.0",
