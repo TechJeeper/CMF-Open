@@ -142,20 +142,65 @@ management), then upload with REPLACE targeting the freed slot.
 - **No network** — can't fetch external data after install
 - **Replace mode** — must delete existing dial to install new one
 
-## Beyond Structured Dials
+## Beyond Structured Dials — Native Apps ARE Possible!
 
-For truly custom apps (arbitrary code on the watch), the paths are:
+### Custom Firmware: PROVEN (September 2026)
 
-1. **Custom firmware** — Actions SDK with `ats3089c_dev_watch` board target exists,
-   but flashing risks permanent brick (no recovery mode). RapidZapper halted work
-   on this for safety reasons.
+**u/coatti29 successfully flashed custom firmware on CMF Watch Pro Gen 1:**
 
-2. **Widget hijacking** — Push data via weather city string, music track/artist,
-   or contacts list. These fields accept arbitrary text and display on existing
-   widgets. Proven working but limited.
+> "There is **no digital signature** — integrity is checksum-only. I modified the
+> firmware, fixed the checksums, and successfully flashed a modified build over
+> Bluetooth. The watch now boots a version that doesn't exist officially."
 
-3. **MicroEJ VEE Wear** — Actions Technology partnered with MicroEJ for Java-based
-   app deployment on ATS3085S/E. Unknown if applicable to CMF's ATS3089C.
+Key findings:
+- **No cryptographic signing** — just CRC32/checksum validation
+- Bootloader **safely falls back** if OTA fails (non-bricking)
+- Must bump version number higher than current
+- Same approach should work on Gen 2/3 (ATS3089C)
+
+Tools:
+- [cmfparser](https://github.com/ambraglow/cmfparser) — Unpack OTA firmware
+- Gadgetbridge — Has firmware flash code (disabled but functional)
+
+### Zephyr LLEXT — Dynamic App Loading
+
+The CMF Watch runs **Zephyr RTOS**, which supports **LLEXT** (Linkable Loadable
+Extensions) — runtime loading of precompiled ELF modules:
+
+```
+Apps compiled as .llext ELF → Uploaded over BLE → Loaded at runtime → No reboot
+```
+
+**ZSWatch project** has a working implementation:
+- Apps stored in LittleFS at `/lvgl_lfs/apps/`
+- Hot-loaded via `zsw_llext_app_manager_load_app()`
+- XIP streaming to external flash (minimal RAM usage)
+- Web-based code editor that compiles and deploys over Web Bluetooth!
+
+### Path to Native CMF Watch Apps
+
+| Phase | Goal | Status |
+|-------|------|--------|
+| 1 | Build custom firmware with LLEXT enabled | Research |
+| 2 | Export symbol table for LVGL/BLE/sensors | Research |
+| 3 | Create Extension Development Kit (EDK) | Future |
+| 4 | Web editor: write C → compile → deploy over BLE | Future |
+
+### Key Community Members
+
+- **u/coatti29** — Custom firmware on WP1
+- **ambraglow** — cmfparser, OTA reversing
+- **freethinkel** — fmc_go watchface tools
+- **jakkra** (ZSWatch) — LLEXT app runtime
+
+### Widget Hijacking (Working Today)
+
+Push arbitrary text to existing data fields:
+- Weather city string (`WEATHER_SET_1`)
+- Music track/artist fields
+- Contacts list (20 × name + number)
+
+These display on existing widgets — useful for quick data display.
 
 ## References
 
