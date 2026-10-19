@@ -87,8 +87,17 @@ export class Session {
   }
 
   async request(op: Op, payload: Uint8Array, reply: Op[], timeoutMs?: number): Promise<Message> {
+    const before = new Set(this.waiters)
     const pending = this.expect(reply, timeoutMs)
-    await this.send(op, payload)
+    pending.catch(() => {})
+    const mine = this.waiters.find((w) => !before.has(w))
+    try {
+      await this.send(op, payload)
+    } catch (e) {
+      // A waiter left behind would swallow the reply meant for the next request.
+      this.waiters = this.waiters.filter((w) => w !== mine)
+      throw e
+    }
     return pending
   }
 

@@ -53,7 +53,8 @@ export function WatchProvider({ children }: { children: ReactNode }) {
             buttonListeners.current.forEach((fn) => fn(b))
           }
         })
-        const stored = loadAuthkey(t.id)
+        // Every simulator instance has a fresh secret, so its keys are never worth keeping.
+        const stored = m === 'ble' ? loadAuthkey(t.id) : null
         let loggedIn = false
         if (stored) {
           try {
@@ -65,7 +66,8 @@ export function WatchProvider({ children }: { children: ReactNode }) {
         }
         if (!loggedIn) {
           log('..', 'pairing via AT GETSECRET')
-          saveAuthkey(t.id, await s.pair())
+          const key = await s.pair()
+          if (m === 'ble') saveAuthkey(t.id, key)
         }
         const [firmware, battery] = await Promise.all([
           s.firmwareVersion().catch(() => undefined),

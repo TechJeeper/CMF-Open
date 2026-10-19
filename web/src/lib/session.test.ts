@@ -32,6 +32,15 @@ describe('Session against the simulated watch', () => {
     expect(sim.display.state.notifications[0]).toMatchObject({ title: 'Hello', body: 'again' })
   })
 
+  it('falls back to pairing after a stale stored key is rejected', async () => {
+    const sim = new SimWatch()
+    await sim.connect()
+    const s = new Session(sim, 500)
+    await expect(s.login(new Uint8Array(16).fill(9))).rejects.toThrow()
+    await s.pair()
+    expect(await s.firmwareVersion()).toBe('1.0.0.77')
+  })
+
   it('delivers watch button presses to listeners', async () => {
     const { sim, session } = await connected()
     const got: number[] = []
