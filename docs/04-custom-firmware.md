@@ -11,7 +11,7 @@
 |---|---|---|
 | Which SDK? | Actions Zephyr 2.7 SDK in [lvgl/lv_port_actions_technology](https://github.com/lvgl/lv_port_actions_technology), board `ats3089c_dev_watch` | High: same SoC, framebuffer size, Zephyr/LVGL/SDFS stack |
 | OTA container | Actions `AOTA` (see below) | High: matches published dump offsets; verify with `cmfkit fw info` on a real CMF OTA |
-| Signature check? | None in the SDK updater (CRC32 only). The community's firmware RE reports no signature either | Medium: CMF could have added one. Look for `sign`/`rsa`/`ecdsa` near the OTA code in `app.bin` |
+| Signature check? | The OTA container has CRC32 only. **Boot images can be signed**: the SoC has optional RSA-2048-PSS secure boot (`CONFIG_SOC_SIGN_ENABLE`, see [below](#secure-boot-check)). The community's firmware RE reports no signature | Medium: `cmfkit fw info` on a stock OTA settles it |
 | Update gates | `board_name` must equal the running firmware's; `version_code` must be higher | High (SDK `ota_upgrade.c`) |
 | BLE transfer opcodes | `FFFF:9052` init1, `9040` init2 (version bytes), watch-driven `A042` chunk requests, `9042` plaintext chunks, `9041` finish | Medium: mapped from the official APK, never field-tested |
 | Board specifics (panel, touch, PMIC, pins) | **Unknown.** Must come from the stock image | n/a |
@@ -80,18 +80,74 @@ printf 'BOARD=ats3089c_dev_watch\nAPPLICATION=app_demo\nSUB_APP=cmf_hello\nAPP_C
 
 `.build_config` skips the SDK's interactive board/app menus. The SDK targets Zephyr
 2.7, Armv8-M (`-mcpu=cortex-m33`), and hard-float. With Ubuntu 24.04's GCC 13.2 the
-whole tree (≈800 objects) compiles; the shim is only needed because Debian puts newlib
-in `/usr/lib/arm-none-eabi`.
+whole tree (802 objects) compiles and links. The shim exists only because Debian keeps
+newlib in `/usr/lib/arm-none-eabi`. Without it, the link fails with "uses VFP register
+arguments" against the soft-float `libm.a`.
+
+The build writes these files to `application/app_demo/cmf_hello/outdir/ats3089c_dev_watch/`:
+
+| File | What it is |
+|---|---|
+| `_firmware/bin/app.bin` | The app image (≈830 KB, `ACTH` header, runs from XIP `0x10000000`). This is the only file you replace |
+| `_firmware/bin/mbrec.bin`, `recovery.bin` | Dev-board bootloader and recovery. **Never** ship these to the watch |
+| `_firmware/*_raw.bin` | Full flash image for SWD (`jflash.bat`, `go.jlink`) |
+
+On containers without `/etc/mtab`, run `sudo ln -sf /proc/self/mounts /etc/mtab` first, or
+packaging aborts. The final Windows `.fw` step needs `python2`, but you don't need it:
+cmfkit builds the OTA itself (step 4).
 
 The first build targets the **dev board**. Before it can work on the watch, add a board
 variant (for example `cmf_watch3pro`) with the panel, touch, and pinmux from step 2.
 
 ### 4. Package
 
-Repack the SDK's output into AOTA with the stock `board_name` and a higher
-`version_code`. Start from the stock image's file list: replace only `app.bin` and keep
-the bootloader, recovery, and resources untouched. Keeping the stock bootloader and
-recovery is what makes a bad app recoverable.
+Swap your `app.bin` into the stock OTA. Leave everything else alone, so the stock
+bootloader, recovery, and resources stay in place. Those are what make a bad app
+recoverable.
+
+```bash
+cmfkit fw replace stock_ota.bin app.bin path/to/_firmware/bin/app.bin -o cmf_hello_ota.bin
+```
+
+`fw replace` keeps `board_name`, bumps `version_code` in both the header and `ota.xml`, and
+rewrites the CRCs. It also updates the file's `<partition>` entry in `ota.xml`:
+`file_size` gets the stored size, `orig_size` the raw size, and `checksum` the CRC32 of
+the raw file, matching the SDK's newer `zephyr/tools/build_ota_image.py`.
+
+If the stock file is LZMA-wrapped, the replacement gets the same wrapping: 32 KiB blocks,
+each with the header `'LZMA' | 0x10 | xz_len | raw_len` followed by an XZ stream. Use
+`--compress lzma|raw` to override.
+
+### Secure boot check
+
+Every boot file starts with an `ACTH` header (`image_head_t`). After the body come a
+*protected* TLV area, covered by the signature, and then a TLV area that holds the
+signature itself. A secure-boot build does three things:
+
+* It stores the RSA public key as a `PUBKEY` (0x02) / `PUBKEY_BROM` (0x10) TLV in
+  `mbrec.bin`'s protected area.
+* It appends an `RSA2048_PSS` (0x08) TLV to every image and sets `flags = 0x4`.
+* Its bootloader rejects an `app.bin` whose signature doesn't verify against that key.
+
+The SDK's `ats3085s_dev_watch_sign` board shows the format. `fw info` and `fw replace`
+report it for every image in an OTA, unwrapping LZMA first:
+
+```
+  boot images:
+    mbrec.bin    image 'mbrec' run 0x2ff70039 body 0xeb4  unsigned
+    app.bin      image 'b' run 0x100168b9 body 0xc9a4c  unsigned
+  -> no signatures: the bootloader will run a self-built app.bin
+```
+
+If the stock CMF images say **SIGNED**, OTA sideloading of custom firmware is closed. The
+key is CMF's, and `mbrec` is itself signed for the boot ROM (`PUBKEY_BROM`, almost
+certainly anchored in eFuse), so swapping keys won't help. In that case, stick to host apps and watchfaces (paths A and B), or use SWD
+on a unit where `mbrec` can be rewritten.
+
+Flash encryption is a separate, independent option. The SDK supports an eFuse-keyed
+mode (`enable_encryption`, `encrypt.bin`). If it is on, the plaintext raw image from
+SWD won't run even with signatures off. `fw scan` on an SWD flash dump shows it: an
+encrypted dump has no readable strings past the boot area.
 
 ### 5. Transfer, in order of risk
 

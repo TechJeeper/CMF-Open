@@ -14,7 +14,7 @@ from . import keystore
 from .apps.base import AppRunner
 from .apps.registry import BUILTIN, load
 from .capture import btsnoop
-from .firmware import aota
+from .firmware import actimage, aota, ota_files
 from .firmware import scan as fwscan
 from .protocol import opcodes as ops
 from .protocol import payloads as pl
@@ -180,7 +180,13 @@ def cmd_fw_scan(args: argparse.Namespace) -> None:
 
 
 def cmd_aota_info(args: argparse.Namespace) -> None:
-    print(aota.describe(aota.parse(Path(args.file).read_bytes())))
+    blob = Path(args.file).read_bytes()
+    if not aota.is_aota(blob) and (single := actimage.parse(blob)):
+        print(actimage.describe(single))
+        return
+    img = aota.parse(blob)
+    print(aota.describe(img))
+    print(ota_files.security_report(img))
 
 
 def cmd_aota_extract(args: argparse.Namespace) -> None:
@@ -199,6 +205,22 @@ def cmd_aota_pack(args: argparse.Namespace) -> None:
     blob = aota.pack(img)
     Path(args.output).write_bytes(blob)
     print(aota.describe(aota.parse(blob)))
+    print(f"Wrote {args.output} ({len(blob)} bytes)")
+
+
+def cmd_aota_replace(args: argparse.Namespace) -> None:
+    img = aota.parse(Path(args.image).read_bytes())
+    compress = {"keep": None, "lzma": True, "raw": False}[args.compress]
+    stock = ota_files.boot_images(img).get(args.name)
+    if stock and stock.signed:
+        print(f"warning: stock {args.name} is signed; an unsigned replacement will not boot", file=sys.stderr)
+    img = ota_files.replace_file(img, args.name, Path(args.file).read_bytes(), compress)
+    img = aota.with_version_code(img, aota.current_version_code(img) + 1)
+    blob = aota.pack(img)
+    Path(args.output).write_bytes(blob)
+    out = aota.parse(blob)
+    print(aota.describe(out))
+    print(ota_files.security_report(out))
     print(f"Wrote {args.output} ({len(blob)} bytes)")
 
 
@@ -277,6 +299,13 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--bump", action="store_true", help="increment version_code (the updater rejects equal/older)")
     s.add_argument("--version-code", help="set an explicit version_code (e.g. 0x10000050)")
     s.set_defaults(func=cmd_aota_pack)
+    s = fw.add_parser("replace", help="swap one file (e.g. app.bin) in an AOTA image, fix ota.xml, bump version")
+    s.add_argument("image")
+    s.add_argument("name", help="file inside the image, e.g. app.bin")
+    s.add_argument("file", help="replacement contents (uncompressed)")
+    s.add_argument("-o", "--output", default="ota_custom.bin")
+    s.add_argument("--compress", choices=["keep", "lzma", "raw"], default="keep")
+    s.set_defaults(func=cmd_aota_replace)
 
     s = sub.add_parser("snoop", help="decode CMF frames from an Android btsnoop_hci.log capture")
     s.add_argument("file")
@@ -289,7 +318,10 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> None:
     args = build_parser().parse_args(argv)
     logging.basicConfig(level=[logging.WARNING, logging.INFO, logging.DEBUG][min(args.verbose, 2)])
-    result = args.func(args)
+    try:
+        result = args.func(args)
+    except (aota.AotaError, OSError) as e:
+        sys.exit(f"error: {e}")
     if asyncio.iscoroutine(result):
         try:
             asyncio.run(result)

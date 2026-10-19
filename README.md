@@ -33,7 +33,7 @@ develop and test with no hardware.
 | Display | 466 × 466 round AMOLED, RGB565 |
 | Phone link | BLE GATT: framed commands with AES-128-CBC, a plain-text factory **AT shell**, and a bulk-data channel |
 | Pairing | `AT GETSECRET` → SHA-256 challenge → per-session AES key |
-| Firmware updates | Actions **AOTA** container, CRC32 only (no signature in the vendor updater); must match `board_name` and increase `version_code` |
+| Firmware updates | Actions **AOTA** container, CRC32 only; must match `board_name` and increase `version_code`. The SoC *can* enforce RSA-2048 signed boot images, and `cmfkit fw info` reports whether a stock OTA does |
 | Vendor SDK | Public: [lvgl/lv_port_actions_technology](https://github.com/lvgl/lv_port_actions_technology), with an `ats3089c_dev_watch` board |
 
 Details: [hardware & OS](docs/01-hardware-and-os.md) ·
@@ -88,12 +88,13 @@ Add `--address AA:BB:...` to pick a specific watch, and `-v`/`-vv` to log every 
 ## Firmware research tools
 
 ```bash
-uv run cmfkit fw info ota.bin                 # AOTA header, file list, CRC status
+uv run cmfkit fw info ota.bin                 # AOTA header, files, CRCs, and whether boot images are signed
 uv run cmfkit fw extract ota.bin out/         # unpack ota.xml, app.bin, ...
 uv run cmfkit fw scan out/app.bin             # Zephyr/LVGL/SoC markers, panel & touch driver names, AT commands
 uv run cmfkit fw pack out/ --bump -o new.bin  # repack with CRCs fixed and version_code + 1
+uv run cmfkit fw replace ota.bin app.bin my_app.bin -o new.bin  # swap one file, fix ota.xml, bump version
 uv run cmfkit snoop btsnoop_hci.log --authkey <hex>   # decode an Android HCI capture of Nothing X
-firmware/cmf_hello/setup.sh                   # assemble the Zephyr/LVGL demo inside the Actions SDK
+firmware/cmf_hello/setup.sh                   # assemble the Zephyr/LVGL demo inside the Actions SDK (builds to app.bin)
 ```
 
 Read [docs/04-custom-firmware.md](docs/04-custom-firmware.md) before flashing
@@ -108,7 +109,7 @@ src/cmfkit/
   session.py  pairing, login, commands, watchface upload
   apps/       WatchApp runtime, screen surfaces, built-in apps
   watchface/  photo watchface encoder/decoder
-  firmware/   AOTA container tools, firmware triage scanner
+  firmware/   AOTA container, LZMA/file-swap and boot-image signature tools, triage scanner
   capture/    btsnoop HCI log decoder
 firmware/cmf_hello/   custom Zephyr + LVGL firmware app (Actions SDK, ats3089c)
 examples/             third-party style app
