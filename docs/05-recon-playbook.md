@@ -84,7 +84,7 @@ map (or override `button_map` in your app) and send a PR.
 
 ## Static analysis of app.bin
 
-* Load as raw Arm Thumb (Cortex-M) at the XIP base `0x10000000`. The community found
+* Load as raw Arm Thumb-2 (Armv8-M Mainline, Cortex-M33 class) at the XIP base `0x10000000`. The community found
   the watchface parser at `0x100db35c` on the Pro 2.
 * Strings are unobfuscated. Good anchors: `WFManager`, `ux2sys`, `AT GET`, `ota`, panel
   driver names.

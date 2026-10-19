@@ -68,13 +68,20 @@ layout.
 
 ```bash
 sudo apt install gcc-arm-none-eabi cmake ninja-build device-tree-compiler
-pip install pyelftools pyyaml   # plus anything the SDK's scripts/requirements*.txt asks for
-firmware/cmf_hello/setup.sh     # clones the SDK and assembles app_demo/cmf_hello
-cd third_party/lv_port_actions_technology/action_technology_sdk/zephyr
-source zephyr-env.sh
-export ZEPHYR_TOOLCHAIN_VARIANT=gnuarmemb GNUARMEMB_TOOLCHAIN_PATH=/usr
-./build.sh -n                   # board ats3089c_dev_watch -> app_demo -> cmf_hello
+uv venv --python 3.10 .zenv && source .zenv/bin/activate      # Zephyr 2.7 scripts predate 3.12
+SDK=third_party/lv_port_actions_technology
+firmware/cmf_hello/setup.sh "$SDK"       # clones the SDK (~1 GB) and assembles app_demo/cmf_hello
+uv pip install west -r "$SDK/action_technology_sdk/zephyr/scripts/requirements-base.txt"
+source firmware/toolchain-shim.sh        # distro GCC as Zephyr's gnuarmemb toolchain (see script)
+cd "$SDK/action_technology_sdk/zephyr"
+printf 'BOARD=ats3089c_dev_watch\nAPPLICATION=app_demo\nSUB_APP=cmf_hello\nAPP_CONF=\n' > .build_config
+./build.sh                               # or ./build.sh -n to pick interactively
 ```
+
+`.build_config` skips the SDK's interactive board/app menus. The SDK targets Zephyr
+2.7, Armv8-M (`-mcpu=cortex-m33`), and hard-float. With Ubuntu 24.04's GCC 13.2 the
+whole tree (≈800 objects) compiles; the shim is only needed because Debian puts newlib
+in `/usr/lib/arm-none-eabi`.
 
 The first build targets the **dev board**. Before it can work on the watch, add a board
 variant (for example `cmf_watch3pro`) with the panel, touch, and pinmux from step 2.

@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <string.h>
 #include <board_cfg.h>
 #include <os_common_api.h>
@@ -22,7 +23,7 @@
 #include <sys_wakelock.h>
 #include "app_msg.h"
 
-#define CMF_ORANGE LV_COLOR_MAKE(0xFF, 0x5A, 0x1F)
+#define CMF_ORANGE lv_color_hex(0xFF5A1F)
 
 static K_SEM_DEFINE(g_vsync_sem, 0, 1);
 static uint8_t g_disp_active = 1;

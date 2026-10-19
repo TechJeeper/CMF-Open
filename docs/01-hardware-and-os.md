@@ -10,7 +10,7 @@ public spec sheets.
 |---|---|
 | Model | CMF by Nothing Watch 3 Pro, model **D399** (July 2025). Same platform as the Watch Pro 2 |
 | SoC | **Actions Technology ATS3089C**, Bluetooth dual-mode watch SoC |
-| CPU / DSP | Arm-compatible MCU @ 202 MHz (Actions marketing calls it "MStar"; the community reports Cortex-M4-class) plus a 202 MHz DSP |
+| CPU / DSP | Arm MCU @ 202 MHz that Actions markets as "MStar". The vendor SDK compiles for it with **`-mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard`** (Armv8-M Mainline with a single-precision FPU; SoC series "Leopard"). Plus a 202 MHz DSP |
 | GPU | 2D/2.5D (VGLite-compatible) with JPEG decode |
 | RAM | 1168 KB SRAM + 8 MB PSRAM (on package) |
 | Flash | 4 MB DTR SPI NOR on package, plus external NAND (the spec sheet says 256 MB storage) |
