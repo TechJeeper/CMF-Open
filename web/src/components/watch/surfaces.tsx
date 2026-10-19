@@ -108,7 +108,9 @@ export function ClockOverlay({ clock }: { clock: ClockSpec }) {
   const now = useClock()
   const hh = String(now.getHours()).padStart(2, '0')
   const mm = String(now.getMinutes()).padStart(2, '0')
-  const date = now.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' }).toUpperCase()
+  const day = now.getDate()
+  const weekday = now.toLocaleDateString('en', { weekday: 'short' }).toUpperCase()
+  const date = `${weekday} ${day}`
   const pos = { left: `${(clock.x / 466) * 100}%`, top: `${(clock.y / 466) * 100}%`, color: clock.color }
   const shadow = '[text-shadow:0_0_1.2cqw_rgba(0,0,0,.55)]'
   const body = [
@@ -124,13 +126,13 @@ export function ClockOverlay({ clock }: { clock: ClockSpec }) {
       <span className="font-mono text-[4cqw] tracking-[0.35em] opacity-80">{date}</span>
       <span className="text-[16cqw] font-extralight tracking-tight">{hh}:{mm}</span>
     </div>,
-    <div className="flex items-end gap-[2cqw] leading-none" key={3}>
+    <div className="flex flex-col leading-none" key={3}>
       <span className="font-dot text-[14cqw] font-bold">{hh}:{mm}</span>
-      <span className="pb-[1.5cqw] font-mono text-[3.4cqw] tracking-widest opacity-80">{date}</span>
+      <span className="mt-[1cqw] font-mono text-[4cqw] tracking-widest opacity-80">{date}</span>
     </div>,
-    <div className="flex flex-col items-center leading-none" key={4}>
+    <div className="flex flex-col leading-none" key={4}>
       <span className="font-mono text-[9cqw] font-semibold tracking-tight">{hh}:{mm}</span>
-      <span className="mt-[0.8cqw] font-mono text-[3cqw] tracking-widest opacity-80">{date}</span>
+      <span className="mt-[0.8cqw] font-mono text-[2.8cqw] tracking-widest opacity-80">{date}</span>
     </div>,
   ][clock.style] ?? null
   return (
