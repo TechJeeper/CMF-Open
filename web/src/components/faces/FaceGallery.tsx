@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { ArrowLeft, Download, Loader2, RotateCcw, Send, Sparkles, TriangleAlert } from 'lucide-react'
+import { ArrowLeft, Download, Loader2, Play, RotateCcw, Send, Sparkles, TriangleAlert } from 'lucide-react'
 import { toast } from 'sonner'
 import { trackEvent } from '@/lib/analytics'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -87,6 +87,11 @@ function FaceCard({ face, onOpen }: { face: FaceEntry; onOpen: () => void }) {
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
           <span className="font-medium">{face.name}</span>
+          {face.tags?.includes('animated') && (
+            <Badge variant="secondary" className="gap-1 text-[10px]">
+              <Play className="size-3" /> Animated
+            </Badge>
+          )}
           {face.live && (
             <Badge variant="secondary" className="gap-1 text-[10px]">
               <Sparkles className="size-3" /> Live
@@ -106,24 +111,35 @@ function FaceEditor({ face, onBack }: { face: FaceEntry; onBack: () => void }) {
   const [error, setError] = useState<string | null>(null)
   const [progress, setProgress] = useState<number | null>(null)
   const clock = clockFor(face, values)
+  const isAnimated = face.tags?.includes('animated')
 
   useEffect(() => {
     let live = true
-    const t = setTimeout(() => {
+    let animationId: number | null = null
+    
+    const render = () => {
       renderFace(face.url, values)
         .then((r) => {
           if (!live) return
           setRendered(r)
           setError(null)
+          // Continue animation loop for animated faces
+          if (isAnimated && live) {
+            animationId = requestAnimationFrame(render)
+          }
         })
         .catch((e: Error) => live && setError(e.message))
-    }, 150)
+    }
+    
+    const t = setTimeout(render, 150)
     saveFaceSettings(face.id, values)
+    
     return () => {
       live = false
       clearTimeout(t)
+      if (animationId !== null) cancelAnimationFrame(animationId)
     }
-  }, [face, values])
+  }, [face, values, isAnimated])
 
   const set = (k: string, v: string | number | boolean) => setValues((s) => ({ ...s, [k]: v }))
   const setClock = (patch: Partial<ClockSpec>) => set(CLOCK_KEY, JSON.stringify({ ...clock, ...patch }))
@@ -197,8 +213,13 @@ function FaceEditor({ face, onBack }: { face: FaceEntry; onBack: () => void }) {
 
         <div className="flex flex-col gap-5 rounded-3xl border bg-card p-5">
           <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-xl font-semibold">{face.name}</h2>
+              {isAnimated && (
+                <Badge variant="secondary" className="gap-1">
+                  <Play className="size-3" /> Animated
+                </Badge>
+              )}
               {face.live && (
                 <Badge variant="secondary" className="gap-1">
                   <Sparkles className="size-3" /> Live
@@ -206,6 +227,7 @@ function FaceEditor({ face, onBack }: { face: FaceEntry; onBack: () => void }) {
               )}
             </div>
             <p className="text-sm text-muted-foreground">{face.description}</p>
+            {isAnimated && <p className="text-xs text-muted-foreground">This watchface animates in preview. The installed version captures a single frame.</p>}
             {face.live && <p className="text-xs text-muted-foreground">Uses: {face.live}. Reinstall to refresh it.</p>}
           </div>
 
