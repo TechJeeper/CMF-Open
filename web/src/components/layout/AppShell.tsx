@@ -9,6 +9,7 @@ import { usePwaInstall } from '@/hooks/usePwaInstall'
 import { useRunner } from '@/state/runner-context'
 import { ConnectionButton } from './ConnectionButton'
 import { InstallAppButton } from './InstallAppButton'
+import { MobileInstallPrompt } from './MobileInstallPrompt'
 
 const NAV = [
   { to: '/', label: 'Store', end: true },
@@ -72,6 +73,7 @@ export function AppShell() {
       </main>
       <SiteFooter />
       <ConnectDialog />
+      <MobileInstallPrompt />
     </div>
   )
 }

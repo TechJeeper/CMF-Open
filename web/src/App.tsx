@@ -8,12 +8,14 @@ import { LibraryPage } from '@/pages/LibraryPage'
 import { SideloadPage } from '@/pages/SideloadPage'
 import { StorePage } from '@/pages/StorePage'
 import { WatchfacesPage } from '@/pages/WatchfacesPage'
+import { PwaProvider } from '@/state/PwaProvider'
 import { RunnerProvider } from '@/state/RunnerProvider'
 import { WatchProvider } from '@/state/WatchProvider'
 
 // HashRouter: GitHub Pages has no SPA fallback, so deep links must not hit the server.
 export default function App() {
   return (
+    <PwaProvider>
     <WatchProvider>
       <RunnerProvider>
         <TooltipProvider>
@@ -34,5 +36,6 @@ export default function App() {
         </TooltipProvider>
       </RunnerProvider>
     </WatchProvider>
+    </PwaProvider>
   )
 }
