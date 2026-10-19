@@ -28,7 +28,9 @@ media controls:
 
 This is the same trick community members used to show football scores in the weather
 widget. cmfkit turns it into an app model with a simulator. See
-[06-app-development.md](06-app-development.md).
+[06-app-development.md](06-app-development.md) for Python apps. The same model in
+JavaScript is distributed through the web app store, which handles install, sideloading
+and updates from the browser. See [07-web-app-store.md](07-web-app-store.md).
 
 **Limits.** These are text-only fixed layouts. The phone or PC must stay connected, and
 cmfkit replaces the Nothing X app while it's connected (only one BLE central can own the

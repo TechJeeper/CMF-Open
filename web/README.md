@@ -1,32 +1,32 @@
-# React + TypeScript + Vite
+# CMF App Store (web)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A static web app that installs and runs apps on a CMF Watch 3 Pro over Web Bluetooth. It
+also builds photo watchfaces. A built-in simulated watch makes it usable without hardware.
+It deploys to GitHub Pages.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev        # http://127.0.0.1:47321
+npm test           # protocol vectors vs. Python cmfkit, simulator session, every sample app
+npm run build      # static site in dist/
+npm run catalog    # regenerate public/apps/index.json after adding an app
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+The developer guide (app format, `watch` API, publishing, hosting your own store) is
+[`docs/07-web-app-store.md`](../docs/07-web-app-store.md).
+
+## Layout
+
+```
+public/apps/          sample apps (one ES module each) + generated index.json
+public/sdk/           watch-app.d.ts editor types for app authors
+scripts/              build-catalog.mjs, gen_vectors.py (cross-language test vectors)
+src/lib/protocol/     TypeScript port of cmfkit's frame codec, crypto, opcodes, payloads
+src/lib/transport/    Web Bluetooth transport and the in-browser simulated watch
+src/lib/session.ts    pairing, login, commands, watchface upload
+src/lib/apps/         manifest validation, sandbox worker, host, Screen surface mapping
+src/lib/store/        catalogs, installed apps, settings and per-app storage
+src/lib/watchface/    LZ4 block codec, RGB565 photo-dial container
+src/state/            React providers for the watch connection and the running app
+src/pages/            Store, My apps, App detail/runner, Sideload, Watchfaces, Develop
+```

@@ -1,6 +1,6 @@
 """Generate cross-language test vectors from the Python cmfkit implementation.
 
-    uv run python web/scripts/gen_vectors.py > web/src/lib/__fixtures__/vectors.json
+uv run python web/scripts/gen_vectors.py > web/src/lib/__fixtures__/vectors.json
 """
 
 import json

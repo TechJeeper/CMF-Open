@@ -14,6 +14,12 @@ SDK. It also ships a toolkit for every practical way to get your own software on
    watch's exact SoC (Actions ATS3089C), tools that read and repack the watch's `AOTA`
    firmware container, and a capture decoder for working out the last unknown step.
 
+The **[CMF App Store](web/)** packages options 1 and 2 as a website for GitHub Pages. It
+offers a store of apps, sideloading from a file or URL, an in-browser playground for
+writing apps, and a watchface builder. Everything runs over Web Bluetooth, with a
+simulator for browsers without it. Apps are single JavaScript files; the guide for making
+and publishing them is [docs/07-web-app-store.md](docs/07-web-app-store.md).
+
 Everything talks to the watch through an independent implementation of the
 reverse-engineered BLE protocol. That includes pairing through the factory AT shell,
 so no Nothing account or cloud key is needed. A built-in **simulated watch** lets you
@@ -41,7 +47,19 @@ Details: [hardware & OS](docs/01-hardware-and-os.md) ·
 [**sideloading paths**](docs/03-sideloading-paths.md) ·
 [custom firmware](docs/04-custom-firmware.md) ·
 [recon playbook](docs/05-recon-playbook.md) ·
-[writing apps](docs/06-app-development.md)
+[writing apps](docs/06-app-development.md) ·
+[**web app store & publishing apps**](docs/07-web-app-store.md)
+
+## Web app store
+
+```bash
+cd web && npm install && npm run dev   # http://127.0.0.1:47321
+```
+
+Open it in Chrome or Edge and press **Connect watch**. Pick the simulator, or your CMF
+Watch 3 Pro after disconnecting Nothing X. Then get an app from the store and press
+**Run**. Pushing to `main` deploys it to GitHub Pages via
+`.github/workflows/pages.yml`; enable Pages with source "GitHub Actions".
 
 ## Install
 
@@ -112,6 +130,7 @@ src/cmfkit/
   firmware/   AOTA container, LZMA/file-swap and boot-image signature tools, triage scanner
   capture/    btsnoop HCI log decoder
 firmware/cmf_hello/   custom Zephyr + LVGL firmware app (Actions SDK, ats3089c)
+web/                  CMF App Store: Web Bluetooth store, sideloading, playground, sample apps
 examples/             third-party style app
 docs/                 research write-ups
 tests/                pytest suite (runs entirely on the simulator)
@@ -122,6 +141,7 @@ tests/                pytest suite (runs entirely on the simulator)
 ```bash
 uv run pytest
 uv run ruff check . && uv run ruff format --check .
+cd web && npm test && npm run build
 ```
 
 ## Credits and prior work

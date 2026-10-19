@@ -11,5 +11,6 @@ export default defineConfig({
   server: { host: '127.0.0.1', port: 47321, strictPort: true },
   preview: { host: '127.0.0.1', port: 47322, strictPort: true },
   worker: { format: 'es' },
+  build: { chunkSizeWarningLimit: 800 },
   test: { environment: 'node' },
 })
