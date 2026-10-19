@@ -13,6 +13,8 @@ from pathlib import Path
 from . import keystore
 from .apps.base import AppRunner
 from .apps.registry import BUILTIN, load
+from .capture import btsnoop
+from .firmware import aota
 from .firmware import scan as fwscan
 from .protocol import opcodes as ops
 from .protocol import payloads as pl
@@ -167,11 +169,43 @@ def cmd_apps(_args: argparse.Namespace) -> None:
 
 
 def cmd_fw_scan(args: argparse.Namespace) -> None:
+    head = Path(args.file).read_bytes()[: aota.HEADER_SIZE]
+    if aota.is_aota(head):
+        print(aota.describe(aota.parse(Path(args.file).read_bytes())) + "\n")
     report = fwscan.scan(args.file, keep=bool(args.extract))
     print(fwscan.format_report(report))
     if args.extract:
         for p in fwscan.extract(report, args.extract):
             print(f"extracted {p}")
+
+
+def cmd_aota_info(args: argparse.Namespace) -> None:
+    print(aota.describe(aota.parse(Path(args.file).read_bytes())))
+
+
+def cmd_aota_extract(args: argparse.Namespace) -> None:
+    img = aota.parse(Path(args.file).read_bytes())
+    print(aota.describe(img))
+    for p in aota.extract(img, args.out):
+        print(f"extracted {p}")
+
+
+def cmd_aota_pack(args: argparse.Namespace) -> None:
+    img = aota.load_dir(args.dir)
+    if args.bump:
+        img = aota.with_version_code(img, aota.current_version_code(img) + 1)
+    if args.version_code is not None:
+        img = aota.with_version_code(img, int(args.version_code, 0))
+    blob = aota.pack(img)
+    Path(args.output).write_bytes(blob)
+    print(aota.describe(aota.parse(blob)))
+    print(f"Wrote {args.output} ({len(blob)} bytes)")
+
+
+def cmd_snoop(args: argparse.Namespace) -> None:
+    authkey = bytes.fromhex(args.authkey) if args.authkey else None
+    for line in btsnoop.decode_log(args.file, authkey, show_payload=not args.headers_only):
+        print(line)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -230,6 +264,25 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("file")
     s.add_argument("--extract", metavar="DIR", help="write decompressed streams to DIR")
     s.set_defaults(func=cmd_fw_scan)
+    s = fw.add_parser("info", help="show an AOTA image's header, files and CRC status")
+    s.add_argument("file")
+    s.set_defaults(func=cmd_aota_info)
+    s = fw.add_parser("extract", help="unpack an AOTA image into a directory")
+    s.add_argument("file")
+    s.add_argument("out")
+    s.set_defaults(func=cmd_aota_extract)
+    s = fw.add_parser("pack", help="repack a directory from 'fw extract' into an AOTA image")
+    s.add_argument("dir")
+    s.add_argument("-o", "--output", default="ota_custom.bin")
+    s.add_argument("--bump", action="store_true", help="increment version_code (the updater rejects equal/older)")
+    s.add_argument("--version-code", help="set an explicit version_code (e.g. 0x10000050)")
+    s.set_defaults(func=cmd_aota_pack)
+
+    s = sub.add_parser("snoop", help="decode CMF frames from an Android btsnoop_hci.log capture")
+    s.add_argument("file")
+    s.add_argument("--authkey", help="32-hex auth key to decrypt payloads (from a rooted phone or `cmfkit pair`)")
+    s.add_argument("--headers-only", action="store_true")
+    s.set_defaults(func=cmd_snoop)
     return p
 
 
