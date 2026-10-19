@@ -1,5 +1,7 @@
-import { Bluetooth, Cpu, Loader2, TriangleAlert } from 'lucide-react'
+import { Bluetooth, Copy, Cpu, Loader2, TriangleAlert } from 'lucide-react'
+import { toast } from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { webBluetoothAvailable } from '@/lib/transport/webble'
 import { useWatch } from '@/state/watch-context'
@@ -61,7 +63,21 @@ export function ConnectDialog() {
             <Alert variant="destructive">
               <TriangleAlert />
               <AlertTitle>Couldn't connect</AlertTitle>
-              <AlertDescription>{w.error}</AlertDescription>
+              <AlertDescription className="flex flex-col items-start gap-2">
+                <span>{w.error}</span>
+                {w.wire.length > 0 && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      const text = w.wire.map((l) => `${new Date(l.at).toISOString()} ${l.dir} ${l.text}`).join('\n')
+                      void navigator.clipboard.writeText(text).then(() => toast.success('Bluetooth log copied'))
+                    }}
+                  >
+                    <Copy /> Copy Bluetooth log
+                  </Button>
+                )}
+              </AlertDescription>
             </Alert>
           )}
           {busy && (

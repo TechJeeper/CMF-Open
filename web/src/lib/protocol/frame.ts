@@ -5,10 +5,11 @@
  */
 import { concat } from './bytes'
 import { aesDecrypt, aesEncrypt, crc32le } from './crypto'
-import { isPlaintextOp, opKey, type Op } from './opcodes'
+import { isPlaintextOp, opKey, OPS, type Op } from './opcodes'
 
 export const MAGIC = 0xf5
 export const HEADER_LEN = 11
+const MAX_CHUNK = 1024
 
 export class FrameError extends Error {}
 
@@ -94,12 +95,29 @@ export class FrameDecoder {
       const op = { cmd1: v.getUint16(3), cmd2: v.getUint16(9) }
       const count = v.getUint16(5)
       const index = v.getUint16(7)
+      if (chunkLen > MAX_CHUNK || count === 0 || index === 0 || index > count) {
+        // A stray 0xF5 that isn't a frame start; without this it would stall the stream.
+        this.buf = this.buf.slice(1)
+        continue
+      }
       const encrypted = isEncrypted(op, this.key)
       const wireLen = !encrypted && !this.plaintextCrcOnWire ? Math.max(chunkLen - 4, 0) : chunkLen
       if (this.buf.length < HEADER_LEN + wireLen) return out
       const body = this.buf.slice(HEADER_LEN, HEADER_LEN + wireLen)
       this.buf = this.buf.slice(HEADER_LEN + wireLen)
-      const piece = await this.open(body, encrypted)
+      let piece: Uint8Array
+      try {
+        piece = await this.open(body, encrypted)
+      } catch (e) {
+        // The watch may answer a wrong key with an AUTH_FAILED we can't decrypt.
+        if (opKey(op) !== opKey(OPS.AUTH_FAILED)) throw e
+        piece = new Uint8Array()
+      }
+      if (!encrypted && !this.plaintextCrcOnWire && this.buf.length >= 4) {
+        // Some firmware does put the CRC of plaintext chunks on the wire.
+        const crc = crc32le(piece)
+        if (crc.every((b, i) => b === this.buf[i])) this.buf = this.buf.slice(4)
+      }
       if (count <= 1) {
         out.push({ op, payload: piece })
         continue

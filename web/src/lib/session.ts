@@ -9,7 +9,7 @@ import type { Channel, Transport } from './transport/types'
 export class AuthError extends Error {}
 
 type Waiter = { wanted: Op[]; resolve: (m: Message) => void }
-export type LogFn = (dir: '->' | '<-' | '!!', text: string) => void
+export type LogFn = (dir: '->' | '<-' | '!!' | '..', text: string) => void
 
 export class Session {
   authkey: Uint8Array | null = null
@@ -50,6 +50,8 @@ export class Session {
       }
       return
     }
+    const hex = Array.from(data.subarray(0, 48), (b) => b.toString(16).padStart(2, '0')).join('')
+    this.log('..', `raw ${channel} ${data.length}B ${hex}${data.length > 48 ? '…' : ''}`)
     let messages: Message[]
     try {
       messages = await this.decoder.feed(data)
@@ -114,8 +116,12 @@ export class Session {
     })
   }
 
-  /** First-time pairing via the factory AT shell secret. Returns the auth key to persist. */
-  async pair(secret?: Uint8Array): Promise<Uint8Array> {
+  /**
+   * First-time pairing via the factory AT shell secret. Returns the auth key to persist.
+   * `onKey` fires as soon as the key is negotiated: the watch has stored it by then, so it
+   * is worth keeping even if the login that follows fails.
+   */
+  async pair(secret?: Uint8Array, onKey?: (authkey: Uint8Array) => void): Promise<Uint8Array> {
     if (!secret) {
       const reply = await this.shell('AT GETSECRET')
       const m = reply.match(/GETSECRET:([0-9A-Fa-f]{32})/)
@@ -134,6 +140,7 @@ export class Session {
       throw new AuthError('watch signature mismatch (wrong secret?)')
     }
     const authkey = await deriveAuthkey(rnd1, rnd2, secret)
+    onKey?.(authkey)
     await this.login(authkey)
     return authkey
   }
@@ -141,7 +148,16 @@ export class Session {
   async login(authkey: Uint8Array, phoneName = 'CMF App Store') {
     this.authkey = authkey
     this.setKey(authkey)
-    await this.request(OPS.AUTH_PHONE_NAME, concat(pl.POLL, utf8(phoneName)), [OPS.AUTH_WATCH_MAC, OPS.AUTH_FAILED])
+    const hello = concat(pl.POLL, utf8(phoneName))
+    const helloReply = [OPS.AUTH_WATCH_MAC, OPS.AUTH_FAILED]
+    let mac: Message
+    try {
+      mac = await this.request(OPS.AUTH_PHONE_NAME, hello, helloReply, this.timeoutMs * 1.5)
+    } catch {
+      this.log('!!', 'no reply to AUTH_PHONE_NAME, retrying once')
+      mac = await this.request(OPS.AUTH_PHONE_NAME, hello, helloReply, this.timeoutMs * 1.5)
+    }
+    if (sameOp(mac.op, OPS.AUTH_FAILED)) throw new AuthError('watch rejected the auth key')
     const nonce = await this.request(OPS.AUTH_NONCE_REQUEST, pl.POLL, [OPS.AUTH_NONCE_REPLY, OPS.AUTH_FAILED])
     if (sameOp(nonce.op, OPS.AUTH_FAILED)) throw new AuthError('watch rejected the stored auth key')
     this.setKey(await deriveSessionKey(nonce.payload, authkey))

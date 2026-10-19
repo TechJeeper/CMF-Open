@@ -78,3 +78,32 @@ describe('lz4 + watchface', () => {
     expect(Array.from(back.full.data.slice(0, 3))).toEqual([0, 0, 0])
   })
 })
+
+describe('decoder robustness against real-watch quirks', () => {
+  const pairReply = Uint8Array.from({ length: 48 }, (_, i) => i)
+
+  it('skips a plaintext CRC that the watch did put on the wire', async () => {
+    const [withCrc] = await encode(OPS.AUTH_PAIR_REPLY, pairReply, null)
+    const [next] = await encode(OPS.AUTH_WATCH_MAC, fromHex('D0C0FFEE5485'), KEY)
+    const dec = new FrameDecoder()
+    expect((await dec.feed(withCrc)).map((m) => m.payload.length)).toEqual([48])
+    dec.key = KEY
+    expect((await dec.feed(next)).map((m) => hex(m.payload))).toEqual(['d0c0ffee5485'])
+  })
+
+  it('resyncs past a stray 0xF5 instead of stalling', async () => {
+    const [mac] = await encode(OPS.AUTH_WATCH_MAC, fromHex('D0C0FFEE5485'), KEY)
+    const dec = new FrameDecoder()
+    dec.key = KEY
+    const junk = fromHex('f5ffff00010002ffff')
+    expect((await dec.feed(new Uint8Array([...junk, ...mac]))).map((m) => hex(m.payload))).toEqual(['d0c0ffee5485'])
+  })
+
+  it('delivers an AUTH_FAILED it cannot decrypt', async () => {
+    const [failed] = await encode(OPS.AUTH_FAILED, pl.POLL, fill(7))
+    const dec = new FrameDecoder()
+    dec.key = KEY
+    const out = await dec.feed(failed)
+    expect(out.map((m) => m.op)).toEqual([OPS.AUTH_FAILED])
+  })
+})

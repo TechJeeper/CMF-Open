@@ -66,8 +66,7 @@ export function WatchProvider({ children }: { children: ReactNode }) {
         }
         if (!loggedIn) {
           log('..', 'pairing via AT GETSECRET')
-          const key = await s.pair()
-          if (m === 'ble') saveAuthkey(t.id, key)
+          await s.pair(undefined, (key) => m === 'ble' && saveAuthkey(t.id, key))
         }
         const [firmware, battery] = await Promise.all([
           s.firmwareVersion().catch(() => undefined),
