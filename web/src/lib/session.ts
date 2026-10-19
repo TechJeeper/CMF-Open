@@ -89,13 +89,19 @@ export class Session {
     }
   }
 
-  async request(op: Op, payload: Uint8Array, reply: Op[], timeoutMs?: number): Promise<Message> {
+  async request(
+    op: Op,
+    payload: Uint8Array,
+    reply: Op[],
+    timeoutMs?: number,
+    channel: Channel = 'command',
+  ): Promise<Message> {
     const before = new Set(this.waiters)
     const pending = this.expect(reply, timeoutMs)
     pending.catch(() => {})
     const mine = this.waiters.find((w) => !before.has(w))
     try {
-      await this.send(op, payload)
+      await this.send(op, payload, channel)
     } catch (e) {
       // A waiter left behind would swallow the reply meant for the next request.
       this.waiters = this.waiters.filter((w) => w !== mine)
@@ -192,7 +198,9 @@ export class Session {
     blob: Uint8Array,
     opts: { style?: number; x?: number; y?: number; color565?: number; progress?: (done: number, total: number) => void } = {},
   ): Promise<boolean> {
-    const init1 = await this.request(OPS.WF_INIT1_REQUEST, pl.POLL, [OPS.WF_INIT1_REPLY])
+    // Watchface transfer uses the data GATT service (Gadgetbridge sendData), not command.
+    const data: Channel = 'data'
+    const init1 = await this.request(OPS.WF_INIT1_REQUEST, pl.POLL, [OPS.WF_INIT1_REPLY], this.timeoutMs * 2, data)
     if (init1.payload[0] !== 1) throw new Error('watch refused the watchface transfer')
     const next = () => {
       const p = this.expect([OPS.WF_CHUNK_REQUEST, OPS.WF_FINISH_REQUEST], this.timeoutMs * 4)
@@ -204,12 +212,14 @@ export class Session {
       OPS.WF_INIT2_PHOTO_REQUEST,
       pl.photoDialInit(blob.length, opts.style, opts.x, opts.y, opts.color565),
       [OPS.WF_INIT2_PHOTO_REPLY],
+      this.timeoutMs * 2,
+      data,
     )
     if (init2.payload[0] !== 1) throw new Error('watch rejected the watchface header')
     for (;;) {
       const msg = await pending
       if (sameOp(msg.op, OPS.WF_FINISH_REQUEST)) {
-        await this.send(OPS.WF_FINISH_ACK, pl.POLL)
+        await this.send(OPS.WF_FINISH_ACK, pl.POLL, data)
         return msg.payload[0] === 1
       }
       const { offset, length } = pl.chunkRequest(msg.payload)

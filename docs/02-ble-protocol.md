@@ -63,7 +63,7 @@ generously (the web app waits 60 s) and tell the user to check the watch.
 | Weather | `FFFF:906B` | 199 B; city[32] at offset 111; temps `(°C+100)&0xFF` |
 | Contacts | `00D5:0001` | N × (name[32], phone[25]), N ≤ 20 |
 | Find watch | `005D:0001` | `01` |
-| Photo watchface | `8052` → `9063` → watch `A064(offset,len)` / phone `9064` chunks → `A065` result → `9065` | header in `payloads.photo_dial_init` |
+| Photo watchface | on the **data** service: `8052` → `9063` → watch `A064(offset,len)` / phone `9064` chunks → `A065` result → `9065` | header in `payloads.photo_dial_init`; `0052` init-1 reply may arrive on the command notify characteristic |
 
 ## What's not verified on a Watch 3 Pro
 

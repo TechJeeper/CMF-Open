@@ -80,9 +80,16 @@ class Session:
         for chunk in frame.encode(op, payload, self._key, self.transport.mtu):
             await self.transport.write(channel, chunk)
 
-    async def request(self, op: Op, payload: bytes, *reply: Op, timeout: float | None = None) -> frame.Message:
+    async def request(
+        self,
+        op: Op,
+        payload: bytes,
+        *reply: Op,
+        timeout: float | None = None,
+        channel: Channel = Channel.COMMAND,
+    ) -> frame.Message:
         fut = self._expect(*reply)
-        await self.send(op, payload)
+        await self.send(op, payload, channel)
         try:
             return await asyncio.wait_for(fut, timeout or self.timeout)
         except TimeoutError as exc:
@@ -182,19 +189,25 @@ class Session:
         progress: Callable[[int, int], None] | None = None,
     ) -> bool:
         """Upload a photo watchface container. Returns True if the watch activated it."""
-        init1 = await self.request(ops.WF_INIT1_REQUEST, pl.POLL, ops.WF_INIT1_REPLY)
+        # Watchface transfer uses the data GATT service, not command (see Gadgetbridge sendData).
+        init1 = await self.request(
+            ops.WF_INIT1_REQUEST, pl.POLL, ops.WF_INIT1_REPLY, channel=Channel.DATA
+        )
         if not init1.payload or init1.payload[0] != 1:
             raise RuntimeError(f"watch refused watchface transfer: {init1.payload.hex()}")
         chunk_or_finish = self._expect(ops.WF_CHUNK_REQUEST, ops.WF_FINISH_REQUEST)
         init2 = await self.request(
-            ops.WF_INIT2_PHOTO_REQUEST, pl.photo_dial_init(len(blob), style, x, y, color565), ops.WF_INIT2_PHOTO_REPLY
+            ops.WF_INIT2_PHOTO_REQUEST,
+            pl.photo_dial_init(len(blob), style, x, y, color565),
+            ops.WF_INIT2_PHOTO_REPLY,
+            channel=Channel.DATA,
         )
         if not init2.payload or init2.payload[0] != 1:
             raise RuntimeError(f"watch rejected watchface header: {init2.payload.hex()}")
         while True:
             msg = await asyncio.wait_for(chunk_or_finish, self.timeout * 4)
             if msg.op == ops.WF_FINISH_REQUEST:
-                await self.send(ops.WF_FINISH_ACK, pl.POLL)
+                await self.send(ops.WF_FINISH_ACK, pl.POLL, channel=Channel.DATA)
                 return bool(msg.payload) and msg.payload[0] == 1
             offset, length = pl.chunk_request(msg.payload)
             chunk_or_finish = self._expect(ops.WF_CHUNK_REQUEST, ops.WF_FINISH_REQUEST)
