@@ -24,6 +24,11 @@ MARKERS = [
     rb"[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+",
     rb"AT [A-Z]{4,16}",
     rb"(?:fatfs|sdfs|nvram|ota|bootloader)[a-z_]{0,20}",
+    # Display and touch controllers that have drivers in the Actions SDK. A hit in
+    # stock firmware tells you which driver a custom build must enable.
+    rb"(?i:axs15231b|er76288a|ft2308|gc9c01|icna331[01]b?|jd9853|rm69090|rm690b0|sh8601z0|st77903|st77916|st7802)",
+    rb"(?i:co5300|sh8601a?|rm67162)",
+    rb"(?i:cst816s?|cst820|ft316[89]|ft5x0x|chsc6[0-9]{3}|hyn[a-z0-9_]{2,10})",
 ]
 
 

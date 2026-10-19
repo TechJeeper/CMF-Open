@@ -7,3 +7,4 @@ agent-tools/
 build/
 /firmware/**/build/
 *.fw
+third_party/

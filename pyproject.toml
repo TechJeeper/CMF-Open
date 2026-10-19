@@ -1,7 +1,7 @@
 [project]
 name = "cmfkit"
 version = "0.1.0"
-description = "Add your description here"
+description = "Reverse-engineered toolkit to build and sideload apps, watchfaces and firmware for the CMF Watch 3 Pro"
 readme = "README.md"
 authors = [
     { name = "Cursor Agent", email = "cursoragent@cursor.com" }
