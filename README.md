@@ -64,6 +64,22 @@ Watch 3 Pro after disconnecting Nothing X. Then get an app from the store and pr
 **Run**. Pushing to `main` deploys it to GitHub Pages via
 `.github/workflows/pages.yml`; enable Pages with source "GitHub Actions".
 
+## Android app
+
+The web app store is also available as a native Android app with additional features:
+
+- **Background sync**: Keep live watchface data (moon phases, weather) updated automatically
+- **Native BLE**: Better Bluetooth performance than Web Bluetooth
+- **Boot persistence**: Sync service restarts automatically after device reboot
+- **Works offline**: No browser needed once installed
+
+```bash
+cd web && npm run build && npx cap sync android
+# Open web/android in Android Studio and build
+```
+
+See [web/android/README.md](web/android/README.md) for build instructions.
+
 ## Install
 
 Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/). For real hardware you also

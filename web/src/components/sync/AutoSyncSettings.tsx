@@ -1,17 +1,38 @@
 import { useEffect, useState } from 'react'
-import { Moon, Cloud, RefreshCw, Clock } from 'lucide-react'
+import { Moon, Cloud, RefreshCw, Clock, Smartphone } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { loadSyncConfig, saveSyncConfig, getLastSync, type SyncConfig } from '@/lib/sync/auto-sync'
+import CMFSync from '@/lib/native/sync'
 
 export function AutoSyncSettings() {
   const [config, setConfig] = useState<SyncConfig>(loadSyncConfig)
   const [lastSync, setLastSync] = useState<number | null>(getLastSync)
+  const [isNativeApp, setIsNativeApp] = useState(false)
+  const [backgroundSyncEnabled, setBackgroundSyncEnabled] = useState(false)
 
   useEffect(() => {
     const interval = setInterval(() => setLastSync(getLastSync()), 60000)
     return () => clearInterval(interval)
   }, [])
+
+  useEffect(() => {
+    CMFSync.getDeviceInfo().then((info) => {
+      setIsNativeApp(info.isAndroid)
+      if (info.isAndroid) {
+        CMFSync.isBackgroundSyncEnabled().then((res) => setBackgroundSyncEnabled(res.enabled))
+      }
+    })
+  }, [])
+
+  const toggleBackgroundSync = async (enabled: boolean) => {
+    if (enabled) {
+      await CMFSync.startBackgroundSync()
+    } else {
+      await CMFSync.stopBackgroundSync()
+    }
+    setBackgroundSyncEnabled(enabled)
+  }
 
   const update = (patch: Partial<SyncConfig>) => {
     const next = { ...config, ...patch }
@@ -111,10 +132,29 @@ export function AutoSyncSettings() {
         </div>
       </div>
 
-      <p className="text-xs text-muted-foreground">
-        Due to Web Bluetooth limitations, we can't sync in the background.
-        Data is pushed each time you connect your watch.
-      </p>
+      {isNativeApp ? (
+        <div className="flex items-center justify-between rounded-lg border border-emerald-800/50 bg-emerald-950/30 p-4">
+          <div className="flex items-center gap-3">
+            <Smartphone className="size-5 text-emerald-400" />
+            <div className="flex flex-col gap-0.5">
+              <span className="font-medium">Background sync</span>
+              <span className="text-xs text-muted-foreground">
+                Sync live data even when app is closed
+              </span>
+            </div>
+          </div>
+          <Switch
+            checked={backgroundSyncEnabled}
+            onCheckedChange={(enabled) => void toggleBackgroundSync(enabled)}
+          />
+        </div>
+      ) : (
+        <p className="text-xs text-muted-foreground">
+          Due to Web Bluetooth limitations, we can't sync in the background.
+          Data is pushed each time you connect your watch.
+          Install the Android app for background sync.
+        </p>
+      )}
     </div>
   )
 }
