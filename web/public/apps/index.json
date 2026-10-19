@@ -103,6 +103,19 @@
       "entry": "crypto-ticker.js"
     },
     {
+      "id": "bpm",
+      "name": "BPM Tap",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🎵",
+      "description": "Find the tempo of any song. Tap play in time with the beat and see the BPM. Great for DJs and musicians.",
+      "tags": [
+        "music",
+        "tools"
+      ],
+      "entry": "bpm.js"
+    },
+    {
       "id": "breathe",
       "name": "Breathe",
       "version": "1.0.0",
@@ -125,6 +138,19 @@
         "health"
       ],
       "entry": "caffeine.js"
+    },
+    {
+      "id": "compass",
+      "name": "Compass",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🧭",
+      "description": "Display cardinal directions on your wrist. Tap next/prev to rotate, play calibrates to north.",
+      "tags": [
+        "tools",
+        "outdoor"
+      ],
+      "entry": "compass.js"
     },
     {
       "id": "countdown",
@@ -164,6 +190,32 @@
         "education"
       ],
       "entry": "flashcards.js"
+    },
+    {
+      "id": "focus",
+      "name": "Focus Mode",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🎯",
+      "description": "Enter deep focus mode. Get periodic reminders to stay on task and track your focus sessions.",
+      "tags": [
+        "productivity",
+        "mindfulness"
+      ],
+      "entry": "focus.js"
+    },
+    {
+      "id": "gratitude",
+      "name": "Gratitude",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🙏",
+      "description": "Daily gratitude prompts to boost your wellbeing. Cycle through reflections and track your streak.",
+      "tags": [
+        "mindfulness",
+        "health"
+      ],
+      "entry": "gratitude.js"
     },
     {
       "id": "habits",
@@ -218,6 +270,19 @@
       "entry": "kitchen-timer.js"
     },
     {
+      "id": "split",
+      "name": "Lap Timer",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🏃",
+      "description": "Track lap times for running, swimming, or cycling. Records splits and shows pace comparison.",
+      "tags": [
+        "fitness",
+        "sports"
+      ],
+      "entry": "split.js"
+    },
+    {
       "id": "weather-live",
       "name": "Live Weather",
       "version": "1.0.0",
@@ -232,6 +297,19 @@
       "entry": "weather-live.js"
     },
     {
+      "id": "meditation",
+      "name": "Meditation Bell",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🔔",
+      "description": "A meditation timer that rings a bell at your chosen intervals. Helps maintain focus during practice.",
+      "tags": [
+        "health",
+        "mindfulness"
+      ],
+      "entry": "meditation.js"
+    },
+    {
       "id": "metronome",
       "name": "Metronome",
       "version": "1.0.0",
@@ -243,6 +321,19 @@
         "timer"
       ],
       "entry": "metronome.js"
+    },
+    {
+      "id": "journal",
+      "name": "Mood Journal",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "📓",
+      "description": "Log your mood and energy throughout the day with simple emoji ratings. Track patterns over time.",
+      "tags": [
+        "health",
+        "productivity"
+      ],
+      "entry": "journal.js"
     },
     {
       "id": "morse",
@@ -309,6 +400,32 @@
       "entry": "random-walk.js"
     },
     {
+      "id": "reaction",
+      "name": "Reaction Test",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "⚡",
+      "description": "Measure your reaction time. Wait for GO! then tap play as fast as you can. Tracks your best time.",
+      "tags": [
+        "games",
+        "health"
+      ],
+      "entry": "reaction.js"
+    },
+    {
+      "id": "reps",
+      "name": "Rep Counter",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "💪",
+      "description": "Track workout reps and sets. Tap play to count reps, next for new set. Shows total volume.",
+      "tags": [
+        "fitness",
+        "health"
+      ],
+      "entry": "reps.js"
+    },
+    {
       "id": "scoreboard",
       "name": "Scoreboard",
       "version": "1.0.0",
@@ -320,6 +437,19 @@
         "games"
       ],
       "entry": "scoreboard.js"
+    },
+    {
+      "id": "stretch",
+      "name": "Stretch Timer",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "icon": "🧘",
+      "description": "A guided stretching routine with timed holds. Perfect for desk workers and athletes.",
+      "tags": [
+        "fitness",
+        "health"
+      ],
+      "entry": "stretch.js"
     },
     {
       "id": "tip-split",

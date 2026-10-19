@@ -297,6 +297,78 @@
       "entry": "bauhaus.js"
     },
     {
+      "id": "binary",
+      "name": "Binary Clock",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Time displayed in binary. Each column shows hours, minutes, seconds as illuminated dots. A true nerd flex.",
+      "tags": [
+        "nerd",
+        "minimal"
+      ],
+      "clock": null,
+      "settings": [
+        {
+          "key": "onColor",
+          "label": "On color",
+          "type": "color",
+          "default": "#00ff88"
+        },
+        {
+          "key": "offColor",
+          "label": "Off color",
+          "type": "color",
+          "default": "#1a2a1f"
+        },
+        {
+          "key": "showSeconds",
+          "label": "Show seconds",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "showDecimal",
+          "label": "Show decimal hint",
+          "type": "boolean",
+          "default": true
+        }
+      ],
+      "entry": "binary.js"
+    },
+    {
+      "id": "cassette",
+      "name": "Cassette",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A spinning cassette tape from the 80s. The reels rotate with the seconds, bringing retro vibes.",
+      "tags": [
+        "retro",
+        "music",
+        "fun"
+      ],
+      "clock": {
+        "style": 1,
+        "x": 158,
+        "y": 180,
+        "color": "#ff6b35"
+      },
+      "settings": [
+        {
+          "key": "label",
+          "label": "Tape label",
+          "type": "text",
+          "default": "AWESOME MIX"
+        },
+        {
+          "key": "tapeColor",
+          "label": "Tape color",
+          "type": "color",
+          "default": "#1a1a2e"
+        }
+      ],
+      "entry": "cassette.js"
+    },
+    {
       "id": "analog-classic",
       "name": "Classic Analog",
       "version": "1.0.0",
@@ -380,6 +452,39 @@
       "entry": "zen-enso.js"
     },
     {
+      "id": "forest",
+      "name": "Forest",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A serene forest that shifts from dawn to dusk. Trees sway gently and the sky changes with real time.",
+      "tags": [
+        "nature",
+        "live",
+        "calm"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 160,
+        "y": 70,
+        "color": "#ffffff"
+      },
+      "settings": [
+        {
+          "key": "season",
+          "label": "Season",
+          "type": "select",
+          "options": [
+            "Spring",
+            "Summer",
+            "Autumn",
+            "Winter"
+          ],
+          "default": "Summer"
+        }
+      ],
+      "entry": "forest.js"
+    },
+    {
       "id": "glitch",
       "name": "Glitch",
       "version": "1.0.0",
@@ -416,6 +521,39 @@
         }
       ],
       "entry": "glitch.js"
+    },
+    {
+      "id": "heartbeat",
+      "name": "Heartbeat",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A glowing heart that pulses with each second. Shows time with a health-focused aesthetic.",
+      "tags": [
+        "fitness",
+        "health",
+        "fun"
+      ],
+      "clock": {
+        "style": 2,
+        "x": 130,
+        "y": 340,
+        "color": "#ff4757"
+      },
+      "settings": [
+        {
+          "key": "heartColor",
+          "label": "Heart color",
+          "type": "color",
+          "default": "#ff4757"
+        },
+        {
+          "key": "pulseSpeed",
+          "label": "Pulse with seconds",
+          "type": "boolean",
+          "default": true
+        }
+      ],
+      "entry": "heartbeat.js"
     },
     {
       "id": "lava",
@@ -460,6 +598,32 @@
         }
       ],
       "entry": "lava.js"
+    },
+    {
+      "id": "luxury",
+      "name": "Luxury Classic",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "An elegant analog watch inspired by classic luxury timepieces. Polished metal and refined details.",
+      "tags": [
+        "classic",
+        "elegant"
+      ],
+      "clock": null,
+      "settings": [
+        {
+          "key": "metal",
+          "label": "Metal finish",
+          "type": "select",
+          "options": [
+            "Gold",
+            "Silver",
+            "Rose Gold"
+          ],
+          "default": "Gold"
+        }
+      ],
+      "entry": "luxury.js"
     },
     {
       "id": "marble",
@@ -566,6 +730,88 @@
       "entry": "month.js"
     },
     {
+      "id": "neon",
+      "name": "Neon Sign",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A glowing neon sign that flickers occasionally. Brings the vibe of a late-night diner to your wrist.",
+      "tags": [
+        "retro",
+        "nerd",
+        "fun"
+      ],
+      "clock": null,
+      "settings": [
+        {
+          "key": "color",
+          "label": "Neon color",
+          "type": "color",
+          "default": "#ff0080"
+        },
+        {
+          "key": "flicker",
+          "label": "Flicker effect",
+          "type": "boolean",
+          "default": true
+        }
+      ],
+      "entry": "neon.js"
+    },
+    {
+      "id": "waves",
+      "name": "Ocean Waves",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Calming ocean waves that ripple across your wrist. The sun or moon rises based on the time.",
+      "tags": [
+        "nature",
+        "calm",
+        "live"
+      ],
+      "clock": {
+        "style": 0,
+        "x": 158,
+        "y": 200,
+        "color": "#ffffff"
+      },
+      "settings": [
+        {
+          "key": "waveColor",
+          "label": "Wave color",
+          "type": "color",
+          "default": "#0077b6"
+        }
+      ],
+      "entry": "waves.js"
+    },
+    {
+      "id": "pixel",
+      "name": "Pixel Art",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A chunky 8-bit pixel art clock that takes you back to the golden age of gaming.",
+      "tags": [
+        "retro",
+        "fun"
+      ],
+      "clock": null,
+      "settings": [
+        {
+          "key": "palette",
+          "label": "Color palette",
+          "type": "select",
+          "options": [
+            "Gameboy",
+            "NES",
+            "CGA",
+            "Neon"
+          ],
+          "default": "Gameboy"
+        }
+      ],
+      "entry": "pixel.js"
+    },
+    {
       "id": "prism",
       "name": "Prism",
       "version": "1.0.0",
@@ -648,6 +894,73 @@
         }
       ],
       "entry": "skyline.js"
+    },
+    {
+      "id": "orbit",
+      "name": "Solar Orbit",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "A tiny solar system where planets represent hours and minutes. Watch time orbit around the sun.",
+      "tags": [
+        "space",
+        "fun",
+        "live"
+      ],
+      "clock": null,
+      "settings": [
+        {
+          "key": "showLabels",
+          "label": "Show time labels",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "trailLength",
+          "label": "Orbit trails",
+          "type": "boolean",
+          "default": true
+        }
+      ],
+      "entry": "orbit.js"
+    },
+    {
+      "id": "rings",
+      "name": "Time Rings",
+      "version": "1.0.0",
+      "author": "cmfkit",
+      "description": "Three concentric arcs that fill as hours, minutes, and seconds progress. A beautiful data visualization.",
+      "tags": [
+        "minimal",
+        "fitness"
+      ],
+      "clock": null,
+      "settings": [
+        {
+          "key": "hourColor",
+          "label": "Hour ring",
+          "type": "color",
+          "default": "#ff6b6b"
+        },
+        {
+          "key": "minColor",
+          "label": "Minute ring",
+          "type": "color",
+          "default": "#4ecdc4"
+        },
+        {
+          "key": "secColor",
+          "label": "Second ring",
+          "type": "color",
+          "default": "#ffe66d"
+        },
+        {
+          "key": "thickness",
+          "label": "Ring thickness",
+          "type": "number",
+          "default": 24
+        }
+      ],
+      "entry": "rings.js"
     },
     {
       "id": "topo",
