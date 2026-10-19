@@ -4,8 +4,8 @@ export const face = {
   name: 'Synthwave',
   version: '1.0.0',
   author: 'cmfkit',
-  description: 'A striped retro sun sinking behind neon mountains onto an endless glowing grid. Pure 1986.',
-  tags: ['retro', 'generative'],
+  description: 'A striped retro sun with an endless glowing grid rushing towards you. Pure 1986.',
+  tags: ['retro', 'generative', 'animated'],
   clock: { style: 2, x: 120, y: 52, color: '#fff0fb' },
   settings: [
     { key: 'grid', label: 'Grid colour', type: 'color', default: '#ff2a6d' },
@@ -13,10 +13,12 @@ export const face = {
   ],
 }
 
-export default function draw(ctx, { size, settings, random, noise }) {
+export default function draw(ctx, { size, settings, random, noise, now }) {
   const grid = String(settings.grid || '#ff2a6d')
   const H = 268
   const cx = size / 2
+  
+  const time = (now.getSeconds() + now.getMilliseconds() / 1000) / 60
 
   const sky = ctx.createLinearGradient(0, 0, 0, H)
   sky.addColorStop(0, '#0b0120')
@@ -86,14 +88,20 @@ export default function draw(ctx, { size, settings, random, noise }) {
   ctx.shadowColor = grid
   ctx.shadowBlur = 10
   ctx.lineWidth = 1.4
-  for (let i = 1; i <= 13; i++) {
-    const yy = H + (size - H) * Math.pow(i / 13, 2.1)
-    ctx.globalAlpha = 0.35 + 0.65 * (i / 13)
+  
+  // Animated horizontal grid lines rushing towards viewer
+  const gridOffset = (time * 8) % 1
+  for (let i = 0; i <= 14; i++) {
+    const basePos = (i + gridOffset) / 14
+    const yy = H + (size - H) * Math.pow(basePos, 2.1)
+    if (yy < H || yy > size) continue
+    ctx.globalAlpha = 0.35 + 0.65 * basePos
     ctx.beginPath()
     ctx.moveTo(0, yy)
     ctx.lineTo(size, yy)
     ctx.stroke()
   }
+  
   ctx.globalAlpha = 0.85
   for (let k = -14; k <= 14; k++) {
     ctx.beginPath()

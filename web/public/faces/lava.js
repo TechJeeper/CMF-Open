@@ -5,7 +5,7 @@ export const face = {
   version: '1.0.0',
   author: 'cmfkit',
   description: 'Warm blobs of wax merging and splitting in a dark lamp. Pick your own wax and glass colours.',
-  tags: ['generative', 'retro'],
+  tags: ['generative', 'retro', 'animated'],
   clock: { style: 1, x: 70, y: 118, color: '#fff4e8' },
   settings: [
     { key: 'seed', label: 'Blobs', type: 'number', default: 5 },
@@ -17,16 +17,27 @@ export const face = {
 
 const rgb = (h) => [1, 3, 5].map((i) => parseInt(String(h).slice(i, i + 2), 16) || 0)
 
-export default function draw(ctx, { size, settings, random }) {
+export default function draw(ctx, { size, settings, random, now }) {
   const hot = rgb(settings.hot || '#ffb347')
   const cold = rgb(settings.cold || '#ff3f6c')
   const glass = rgb(settings.glass || '#2a0d3a')
+  
+  const t = (now.getSeconds() + now.getMilliseconds() / 1000) / 60
+  
   // Blobs favour the right half so the clock on the left stays clear.
-  const balls = Array.from({ length: 8 }, () => ({
-    x: 210 + random() * 190,
-    y: 50 + random() * 360,
-    r: 16 + random() * 30,
-  }))
+  // Each blob oscillates vertically with a unique phase
+  const balls = Array.from({ length: 8 }, (_, i) => {
+    const baseX = 210 + random() * 190
+    const baseY = 50 + random() * 360
+    const phase = random() * Math.PI * 2
+    const speed = 0.5 + random() * 1.5
+    const amplitude = 30 + random() * 50
+    return {
+      x: baseX + Math.sin(t * Math.PI * 2 * speed + phase) * 15,
+      y: baseY + Math.sin(t * Math.PI * 2 * speed * 0.7 + phase) * amplitude,
+      r: 16 + random() * 30 + Math.sin(t * Math.PI * 4 + phase) * 5,
+    }
+  })
   balls.push({ x: 233, y: 500, r: 105 }, { x: 260, y: -40, r: 60 })
   const img = ctx.createImageData(size, size)
   const d = img.data
