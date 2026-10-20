@@ -8,3 +8,4 @@ build/
 /firmware/**/build/
 *.fw
 third_party/
+*.apk
