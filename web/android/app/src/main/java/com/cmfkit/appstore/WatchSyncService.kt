@@ -10,9 +10,11 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
+import android.util.Log
 import androidx.core.app.NotificationCompat
-import java.util.Timer
-import java.util.TimerTask
+import com.cmfkit.appstore.ble.BleManager
+import com.cmfkit.appstore.sync.DataSyncManager
+import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -22,6 +24,7 @@ import java.util.concurrent.TimeUnit
 class WatchSyncService : Service() {
     
     companion object {
+        private const val TAG = "WatchSyncService"
         private const val CHANNEL_ID = "cmf_sync_channel"
         private const val NOTIFICATION_ID = 1001
         private const val SYNC_INTERVAL_MS = 15 * 60 * 1000L // 15 minutes
@@ -38,27 +41,46 @@ class WatchSyncService : Service() {
         fun stop(context: Context) {
             context.stopService(Intent(context, WatchSyncService::class.java))
         }
+        
+        fun isRunning(context: Context): Boolean {
+            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
+            @Suppress("DEPRECATION")
+            return manager.getRunningServices(Int.MAX_VALUE)
+                .any { it.service.className == WatchSyncService::class.java.name }
+        }
     }
     
     private var wakeLock: PowerManager.WakeLock? = null
-    private var syncTimer: Timer? = null
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private var syncJob: Job? = null
+    
+    private lateinit var bleManager: BleManager
+    private lateinit var syncManager: DataSyncManager
     
     override fun onCreate() {
         super.onCreate()
+        Log.d(TAG, "Service created")
         createNotificationChannel()
-        acquireWakeLock()
+        
+        bleManager = BleManager(applicationContext)
+        syncManager = DataSyncManager(applicationContext, bleManager)
     }
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startForeground(NOTIFICATION_ID, createNotification())
-        startSyncTimer()
+        Log.d(TAG, "Service started")
+        startForeground(NOTIFICATION_ID, createNotification("Starting sync..."))
+        acquireWakeLock()
+        startSyncLoop()
         return START_STICKY
     }
     
     override fun onBind(intent: Intent?): IBinder? = null
     
     override fun onDestroy() {
-        stopSyncTimer()
+        Log.d(TAG, "Service destroyed")
+        stopSyncLoop()
+        bleManager.disconnect()
+        syncManager.cleanup()
         releaseWakeLock()
         super.onDestroy()
     }
@@ -79,7 +101,7 @@ class WatchSyncService : Service() {
         }
     }
     
-    private fun createNotification(): Notification {
+    private fun createNotification(status: String): Notification {
         val pendingIntent = PendingIntent.getActivity(
             this,
             0,
@@ -87,14 +109,28 @@ class WatchSyncService : Service() {
             PendingIntent.FLAG_IMMUTABLE
         )
         
+        val lastSync = syncManager.getLastSync()
+        val lastSyncText = if (lastSync > 0) {
+            val ago = (System.currentTimeMillis() - lastSync) / 60000
+            if (ago < 1) "just now" else "${ago}m ago"
+        } else {
+            "never"
+        }
+        
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("CMF App Store")
-            .setContentText("Syncing live watchface data")
+            .setContentText(status)
+            .setSubText("Last sync: $lastSyncText")
             .setSmallIcon(android.R.drawable.ic_popup_sync)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
             .setSilent(true)
             .build()
+    }
+    
+    private fun updateNotification(status: String) {
+        val manager = getSystemService(NotificationManager::class.java)
+        manager.notify(NOTIFICATION_ID, createNotification(status))
     }
     
     private fun acquireWakeLock() {
@@ -114,26 +150,35 @@ class WatchSyncService : Service() {
         wakeLock = null
     }
     
-    private fun startSyncTimer() {
-        syncTimer?.cancel()
-        syncTimer = Timer().apply {
-            scheduleAtFixedRate(object : TimerTask() {
-                override fun run() {
-                    performSync()
+    private fun startSyncLoop() {
+        syncJob?.cancel()
+        syncJob = scope.launch {
+            while (isActive) {
+                try {
+                    updateNotification("Syncing...")
+                    
+                    val success = syncManager.performSync()
+                    
+                    if (success) {
+                        val deviceName = bleManager.getDeviceName() ?: "CMF Watch"
+                        updateNotification("Connected to $deviceName")
+                    } else {
+                        updateNotification("Waiting for watch...")
+                    }
+                    
+                } catch (e: Exception) {
+                    Log.e(TAG, "Sync error", e)
+                    updateNotification("Sync error: ${e.message}")
                 }
-            }, 0, SYNC_INTERVAL_MS)
+                
+                delay(SYNC_INTERVAL_MS)
+            }
         }
     }
     
-    private fun stopSyncTimer() {
-        syncTimer?.cancel()
-        syncTimer = null
-    }
-    
-    private fun performSync() {
-        // This will be called from JavaScript via Capacitor bridge
-        // The actual sync logic runs in the WebView
-        val intent = Intent("com.cmfkit.appstore.SYNC_TRIGGER")
-        sendBroadcast(intent)
+    private fun stopSyncLoop() {
+        syncJob?.cancel()
+        syncJob = null
+        scope.cancel()
     }
 }

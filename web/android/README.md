@@ -1,87 +1,155 @@
 # CMF App Store - Android App
 
-Native Android app for the CMF Watch App Store. Provides background sync capabilities and native BLE performance.
+Native Android companion app for CMF Watch 3 Pro and Watch Pro 2. Provides background sync capabilities and native BLE performance that the web app can't achieve.
 
 ## Features
 
-- **Background Sync**: Keep live watchface data updated even when the app is closed
-- **Native BLE**: Better Bluetooth performance than Web Bluetooth
-- **Boot Persistence**: Automatically restart sync service after device reboot
-- **Multi-Watch Support**: Works with CMF Watch 3 Pro and CMF Watch Pro 2
+### Background Sync
+- **Moon Phase Updates**: Automatically sync current moon phase to the watch's weather widget
+- **Weather Updates**: Fetch real weather data and push to watch (uses Open-Meteo API, no API key needed)
+- **Time Sync**: Keep watch time synchronized
+- **Boot Persistence**: Sync service restarts automatically after device reboot
+
+### Native BLE
+- Direct Bluetooth Low Energy connection without browser limitations
+- Background operation even when app is closed
+- Automatic reconnection when watch is in range
+
+### Multi-Watch Support
+- CMF Watch 3 Pro
+- CMF Watch Pro 2
+- Same BLE protocol for both models
 
 ## Requirements
 
-- Android Studio Arctic Fox or newer
-- Android SDK 24+ (Android 7.0)
+- Android Studio Hedgehog or newer
+- Android SDK 24+ (Android 7.0 Nougat)
 - JDK 17+
-- CMF Watch 3 Pro or CMF Watch Pro 2
+- CMF Watch 3 Pro or Watch Pro 2
 
 ## Building
 
-### Development Build
+### Open in Android Studio
 
-1. Open the `android` folder in Android Studio
-2. Let Gradle sync complete
-3. Connect your Android device or start an emulator
-4. Click Run (▶)
+1. Open Android Studio
+2. File → Open → Navigate to `web/android` folder
+3. Let Gradle sync complete (may take a few minutes first time)
+4. Connect your Android device via USB (enable USB debugging)
+5. Click Run (▶) or press Shift+F10
+
+### Command Line Build
+
+```bash
+# From the web directory
+cd web
+
+# Build web assets first
+npm run build
+
+# Sync to Android
+npx cap sync android
+
+# Build APK
+cd android
+./gradlew assembleDebug
+
+# APK location
+# app/build/outputs/apk/debug/app-debug.apk
+```
 
 ### Release Build
 
 ```bash
-cd web
-npm run build
-npx cap sync android
 cd android
 ./gradlew assembleRelease
+# APK: app/build/outputs/apk/release/app-release-unsigned.apk
 ```
 
-The APK will be at `app/build/outputs/apk/release/app-release-unsigned.apk`
-
-### Signed Release
-
-For Play Store or distribution, create a keystore and configure signing in `app/build.gradle`.
+For Play Store, you'll need to sign the APK with a keystore.
 
 ## Architecture
 
 ```
-android/
-├── app/src/main/java/com/cmfkit/appstore/
-│   ├── MainActivity.kt      # Main Capacitor activity
-│   ├── SyncPlugin.kt        # Capacitor plugin for sync control
-│   ├── WatchSyncService.kt  # Background foreground service
-│   └── BootReceiver.kt      # Restart service on boot
-└── app/src/main/
-    ├── AndroidManifest.xml  # Permissions and components
-    └── assets/public/       # Web app (from dist/)
+android/app/src/main/java/com/cmfkit/appstore/
+├── MainActivity.kt          # Main Capacitor activity
+├── SyncPlugin.kt            # Capacitor plugin - JS bridge
+├── WatchSyncService.kt      # Foreground service for background sync
+├── BootReceiver.kt          # Restart service on device boot
+├── ble/
+│   └── BleManager.kt        # BLE connection management
+├── protocol/
+│   └── CmfProtocol.kt       # CMF Watch BLE protocol
+└── sync/
+    └── DataSyncManager.kt   # Data sync logic (moon, weather, etc.)
 ```
 
 ## Permissions
 
-The app requires:
+The app requests these permissions:
 
-- **Bluetooth**: Connect to CMF Watch
-- **Location**: Required for BLE scanning on Android
-- **Foreground Service**: Keep sync running in background
-- **Boot Completed**: Restart service after reboot
+| Permission | Purpose |
+|------------|---------|
+| BLUETOOTH_SCAN | Find CMF Watch devices |
+| BLUETOOTH_CONNECT | Connect to watch |
+| ACCESS_FINE_LOCATION | Required for BLE on older Android |
+| FOREGROUND_SERVICE | Background sync service |
+| RECEIVE_BOOT_COMPLETED | Restart sync after reboot |
+| INTERNET | Fetch weather data |
+
+## How It Works
+
+1. **Connection**: The app scans for devices starting with "CMF Watch" and connects via BLE
+2. **Authentication**: Uses the same protocol as the web app (SHA-256 challenge-response)
+3. **Sync Loop**: Every 15 minutes, syncs enabled data:
+   - Current time
+   - Moon phase (displayed as weather city)
+   - Weather data (if city configured)
+4. **Notifications**: Persistent notification shows sync status
+
+## Configuration
+
+In the app, go to Develop → Auto-Sync to configure:
+
+- **Moon Phase**: Push current moon phase to weather widget
+- **Weather**: Enter city name to sync real weather data
+- **Background Sync**: Enable/disable the background service
+
+## Troubleshooting
+
+### App won't connect to watch
+1. Make sure Nothing X app is disconnected from the watch
+2. Check Bluetooth permissions are granted
+3. Try toggling Bluetooth off/on
+4. Ensure watch is not in DND mode
+
+### Background sync not working
+1. Check battery optimization settings - disable for CMF App Store
+2. Ensure the app has the "Background sync" toggle enabled
+3. Check the notification shows "Connected to CMF Watch"
+
+### Build errors
+1. Clean and rebuild: `./gradlew clean assembleDebug`
+2. Sync Gradle files in Android Studio
+3. Invalidate caches: File → Invalidate Caches
 
 ## Development
 
-### Adding Native Features
+### Adding New Data Sources
 
-1. Create a Capacitor plugin in `SyncPlugin.kt`
-2. Add TypeScript interface in `web/src/lib/native/sync.ts`
-3. Add web fallback in `web/src/lib/native/sync-web.ts`
-4. Rebuild and sync: `npm run build && npx cap sync android`
+1. Add sync method in `DataSyncManager.kt`
+2. Add protocol builder in `CmfProtocol.kt`
+3. Expose via `SyncPlugin.kt`
+4. Update TypeScript interface in `web/src/lib/native/sync.ts`
 
-### Updating Web Code
+### Testing
 
 ```bash
-cd web
-npm run build
-npx cap sync android
-```
+# Run on device
+./gradlew installDebug
 
-Then rebuild in Android Studio.
+# View logs
+adb logcat | grep -E "(CMF|BleManager|SyncPlugin)"
+```
 
 ## License
 
