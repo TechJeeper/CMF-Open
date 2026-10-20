@@ -17,17 +17,17 @@ object CmfProtocol {
     
     private const val TAG = "CmfProtocol"
     
-    // Opcodes (family << 8 | id)
+    // Opcodes (family << 16 | id)
     object Ops {
-        const val TIME_SYNC = 0xFF00_0001
-        const val WEATHER_SET = 0xFFFF_906B
-        const val NOTIFICATION = 0xFFFF_9065
-        const val MUSIC_INFO = 0xFFFF_9067
-        const val BATTERY = 0x00DE_0000
-        const val AUTH1_REQ = 0xFFFF_0001
-        const val AUTH1_RET = 0xFFFF_8001
-        const val AUTH2_REQ = 0xFFFF_0002
-        const val AUTH2_RET = 0xFFFF_8002
+        const val TIME_SYNC: Int = 0xFF00_0001.toInt()
+        const val WEATHER_SET: Int = 0xFFFF_906B.toInt()
+        const val NOTIFICATION: Int = 0xFFFF_9065.toInt()
+        const val MUSIC_INFO: Int = 0xFFFF_9067.toInt()
+        const val BATTERY: Int = 0x00DE_0000.toInt()
+        const val AUTH1_REQ: Int = 0xFFFF_0001.toInt()
+        const val AUTH1_RET: Int = 0xFFFF_8001.toInt()
+        const val AUTH2_REQ: Int = 0xFFFF_0002.toInt()
+        const val AUTH2_RET: Int = 0xFFFF_8002.toInt()
     }
     
     /**

@@ -121,7 +121,7 @@ class DataSyncManager(
         val frames = CmfProtocol.buildFrame(CmfProtocol.Ops.TIME_SYNC, payload, sessionKey)
         for (frame in frames) {
             bleManager.writeCommand(frame)
-            delay(20)
+            delay(20L)
         }
     }
     
@@ -136,7 +136,7 @@ class DataSyncManager(
         val frames = CmfProtocol.buildFrame(CmfProtocol.Ops.WEATHER_SET, payload, sessionKey)
         for (frame in frames) {
             bleManager.writeCommand(frame)
-            delay(20)
+            delay(20L)
         }
     }
     
@@ -158,7 +158,7 @@ class DataSyncManager(
         val frames = CmfProtocol.buildFrame(CmfProtocol.Ops.WEATHER_SET, payload, sessionKey)
         for (frame in frames) {
             bleManager.writeCommand(frame)
-            delay(20)
+            delay(20L)
         }
     }
     
@@ -227,7 +227,7 @@ class DataSyncManager(
         
         for (frame in frames) {
             if (!bleManager.writeCommand(frame)) return false
-            delay(20)
+            delay(20L)
         }
         return true
     }
